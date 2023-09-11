@@ -1,0 +1,279 @@
+Identification_Information:
+  Citation:
+    Citation_Information:
+      Originator: Glynn Williams
+      Publication_Date: 2004
+      Title: caribis - Caribbean Island Nations Coastline Boundaries
+      Geospatial_Data_Presentation_Form: vector digital data
+      Series_Information:
+        Series_Name: Open-File Report
+        Issue_Identification: 2004-1400
+      Publication_Information:
+        Publication_Place: Woods Hole, MA
+        Publisher: U.S. Geological Survey
+      Online_Linkage: http://pubs.usgs.gov/of/2004/ofr2004-1400/data/boundaries/caribis/caribis.zip
+      Online_Linkage:
+      Larger_Work_Citation:
+        Citation_Information:
+          Originator: Uri ten Brink
+          Originator: William Danforth
+          Originator: Chris Polloni
+          Originator: Castle Eugene Parker
+          Originator: Toshi Uozumi
+          Originator: Glynn Williams
+          Publication_Date: 2004
+          Title: Project PROBE Leg II - Final Report and Archive of Swath Bathymetric Sonar, CTD/XBT and GPS Navigation Data Collected During USGS Cruise 03008 (NOAA Cruise RB0303) Puerto Rico Trench 18 February - 7 March, 2003
+          Series_Information:
+            Series_Name: Open-file Report
+            Issue_Identification: 2004-1400
+          Publication_Information:
+            Publication_Place: Woods Hole, Massachusetts
+            Publisher: U.S. Geological Survey, Coastal and Marine Geology Program
+          Online_Linkage: http://pubs.usgs.gov/of/2004/ofr2004-1400/
+  Description:
+    Abstract: The Caribbean Island Nation data set is a shapefile polygon modeling the coastlines of the countries in the region.  Shapefile format provides compatibility with georeferenced raster imagery used in a Geographic Information System (GIS).  In addition, this data set provides a relational perspective view (s) in a GIS of the survey area surrounding the Puerto Rico trench.
+    Purpose: To supplement the main featured mosaic image of the Puerto Rico trench survey area in a GIS.
+  Time_Period_of_Content:
+    Time_Period_Information:
+      Single_Date/Time:
+        Calendar_Date: 1998
+    Currentness_Reference: publication date
+  Status:
+    Progress: Complete
+    Maintenance_and_Update_Frequency: None planned
+  Spatial_Domain:
+    Bounding_Coordinates:
+      West_Bounding_Coordinate: -84.953339
+      East_Bounding_Coordinate: -59.426949
+      North_Bounding_Coordinate: 26.929165
+      South_Bounding_Coordinate: 10.037498
+  Keywords:
+    Theme:
+      Theme_Keyword_Thesaurus: General
+      Theme_Keyword: USGS
+      Theme_Keyword: Coastal and Marine Geology Program
+      Theme_Keyword: CMGP
+      Theme_Keyword: NOAA Office of Ocean Exploration
+      Theme_Keyword: trench
+      Theme_Keyword: U.S. Geological Survey
+      Theme_Keyword: coastline
+      Theme_Keyword: vector shoreline
+      Theme_Keyword: shapefile polyline
+    Place:
+      Place_Keyword_Thesaurus: General
+      Place_Keyword: Anguilla
+      Place_Keyword: Antigua
+      Place_Keyword: Barbuda
+      Place_Keyword: Aruba
+      Place_Keyword: Bahamas
+      Place_Keyword: Barbados
+      Place_Keyword: British Virgin Islands
+      Place_Keyword: Cayman Islands
+      Place_Keyword: Cuba
+      Place_Keyword: Dominica
+      Place_Keyword: Dominica Republic
+      Place_Keyword: Grenada
+      Place_Keyword: Guadeloupe
+      Place_Keyword: Haiti
+      Place_Keyword: Jamaica
+      Place_Keyword: Martinique
+      Place_Keyword: Montserrat
+      Place_Keyword: Netherlands Antilles
+      Place_Keyword: Puerto Rico
+      Place_Keyword: St Kitts
+      Place_Keyword: Nevis
+      Place_Keyword: St Lucia
+      Place_Keyword: St Vincent
+      Place_Keyword: Grenadines
+      Place_Keyword: Trinidad
+      Place_Keyword: Tobago
+      Place_Keyword: Turks Islands
+      Place_Keyword: Caicos Islands
+      Place_Keyword: Virgin Islands
+  Access_Constraints: None
+  Use_Constraints: These data are not to be used for navigation purposes.
+  Point_of_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: U.S. Geological Survey
+        Contact_Person: Glynn Williams (ed.)
+      Contact_Position: Spatial Data Technician
+      Contact_Address:
+        Address_Type: mailing and physical address
+        Address: 384 Woods Hole Road
+        City: Woods Hole
+        State_or_Province: Massachusetts
+        Postal_Code: 02543-2310
+        Country: USA
+      Contact_Voice_Telephone: 508.548.8700 x2290
+      Contact_Facsimile_Telephone: 508.457.2310
+      Contact_Electronic_Mail_Address: gwilliams@usgs.gov
+      Hours_of_Service: 8:00AM to 5:00PM; M-F
+  Data_Set_Credit: U.S. Geological Survey
+  Native_Data_Set_Environment: Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800
+Data_Quality_Information:
+  Completeness_Report: complete
+  Positional_Accuracy:
+    Horizontal_Positional_Accuracy:
+    Vertical_Positional_Accuracy:
+  Lineage:
+    Process_Step:
+      Process_Description: This data set is a subset of another Caribbean Island vector data set found in ESRI's Data & Maps CD-ROM; 19990801.
+      Process_Date: 20040723
+      Process_Contact:
+        Contact_Information:
+          Contact_Person_Primary:
+            Contact_Person: Glynn Williams
+            Contact_Organization: U.S. Geological Survey
+          Contact_Position: Spatial Analyst
+          Contact_Address:
+            Address_Type: mailing and physical address
+            Address: 384 Woods Hole Road
+            City: Woods Hole
+            State_or_Province: Massachusetts
+            Postal_Code: 02543-1598
+            Country: USA
+          Contact_Voice_Telephone: 508.548.8700.x2290
+          Contact_Facsimile_Telephone: 508-457-2310
+          Contact_Electronic_Mail_Address: gwilliams@usgs.gov
+          Hours_of_Service: 8AM to 5PM; M-F
+Spatial_Data_Organization_Information:
+  Direct_Spatial_Reference_Method: Vector
+  Point_and_Vector_Object_Information:
+    SDTS_Terms_Description:
+      SDTS_Point_and_Vector_Object_Type: G-polygon
+      Point_and_Vector_Object_Count: 24
+Spatial_Reference_Information:
+  Horizontal_Coordinate_System_Definition:
+    Geographic:
+      Latitude_Resolution: 0.00001
+      Longitude_Resolution: 0.00001
+      Geographic_Coordinate_Units: Decimal degrees
+    Geodetic_Model:
+      Horizontal_Datum_Name: D_WGS_1984
+      Ellipsoid_Name: WGS_1984
+      Semi-major_Axis: 6378137.000000
+      Denominator_of_Flattening_Ratio: 298.257224
+  Vertical_Coordinate_System_Definition:
+    Altitude_System_Definition:
+      Altitude_Datum_Name: assumed sea level
+      Altitude_Resolution: 1
+      Altitude_Distance_Units: meters
+      Altitude_Encoding_Method: Attribute values
+    Depth_System_Definition:
+Entity_and_Attribute_Information:
+  Detailed_Description:
+    Entity_Type:
+      Entity_Type_Label: caribis
+      Entity_Type_Definition: Shapefile attribute table
+      Entity_Type_Definition_Source: ESRI
+    Attribute:
+      Attribute_Label: FID
+      Attribute_Definition: Internal feature number.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Sequential unique whole numbers that are automatically generated.
+    Attribute:
+      Attribute_Label: Shape
+      Attribute_Definition: Feature geometry.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Coordinates defining the features.
+    Attribute:
+      Attribute_Label: CNTRY_NAME
+      Attribute_Definition: country name.
+      Attribute_Definition_Source: ESRI
+      Attribute_Domain_Values:
+        Unrepresentable_Domain: Coordinates defining the features.
+    Attribute:
+      Attribute_Label: COUNT
+      Attribute_Definition: the square miles of an area
+      Attribute_Definition_Source: ESRI
+    Attribute:
+      Attribute_Label: FIRST_FIPS
+      Attribute_Definition: First order of an abbreviation
+      Attribute_Definition_Source: Federal Infomration Processing Standards (FIPS)
+    Attribute:
+      Attribute_Label: FIRST_REGI
+      Attribute_Definition: First order name of a region
+      Attribute_Definition_Source: Federal Information Processing Standards (FIPS)
+    Attribute:
+      Attribute_Label: FIRST_CONT
+      Attribute_Definition: First order name of a continent
+      Attribute_Definition_Source: Information Processing Standards (FIPS)
+    Attribute:
+      Attribute_Label: SUM_POP_AD
+      Attribute_Definition: The administrative sum of a population
+      Attribute_Definition_Source: Information Processing Standards (FIPS)
+    Attribute:
+      Attribute_Label: SUM_SQKM_A
+      Attribute_Definition: The sum of the squared kilometer area
+      Attribute_Definition_Source: Information Processing Standards (FIPS)
+    Attribute:
+      Attribute_Label: SUM_SQMI_A
+      Attribute_Definition: The sum of the square miled area
+      Attribute_Definition_Source: Information Processing Standards (FIPS)
+Distribution_Information:
+  Distributor:
+    Contact_Information:
+      Contact_Person_Primary:
+        Contact_Person: Uri ten Brink
+        Contact_Organization: U.S. Geological Survey
+      Contact_Position: Research Scientist
+      Contact_Address:
+        Address_Type: mailing address
+        Address: 384  Woods Hole Road
+        City: Woods Hole
+        State_or_Province: MA
+        Postal_Code: 02543-1598
+        Country: USA
+      Contact_Voice_Telephone: 508.548.8700.x2396
+      Contact_Facsimile_Telephone: 508.457.2310
+      Contact_Electronic_Mail_Address: utenbrink@usgs.gov
+  Resource_Description: Downloadable Data: Open-File Report 2004-1400
+  Distribution_Liability: Although this dataset has been used by the U.S. Geological Survey, no warranty, expressed or implied, is made by the USGS as to the accuracy of the data and/or related materials.  The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the USGS in the use of these data or related materials.
+  Standard_Order_Process:
+    Digital_Form:
+      Digital_Transfer_Information:
+        Format_Name: ArcView shapefile
+        Format_Version_Number: 3.2
+        Format_Specification: ESRI polygon shapefile
+        Format_Information_Content: The six files (caribis.dbf, caribis.prj, caribis.sbn, caribis.shp, caribis.shx caribis.xml)
+        File_Decompression_Technique: zip
+        Transfer_Size: 12
+      Digital_Transfer_Option:
+        Offline_Option:
+          Offline_Media: DVD-ROM
+          Recording_Capacity:
+            Recording_Density: 4,700
+            Recording_Density_Units: Mbyte
+          Recording_Format: UDF
+    Fees: none
+  Technical_Prerequisites: The data is available in Environmental Systems Research Institute, Inc. (ESRI) shapefile format. The user must have ArcView 3.+ or ArcGIS 8.+ to read and process the data file. In lieu of ArcView/ArcGIS, the user may utilize another GIS application package capable of importing data.
+Metadata_Reference_Information:
+  Metadata_Date: 20041102
+  Metadata_Contact:
+    Contact_Information:
+      Contact_Organization_Primary:
+        Contact_Organization: U.S. Geological Survey
+        Contact_Person: Glynn Williams
+      Contact_Position: Spatial Data Technician
+      Contact_Address:
+        Address_Type: physical address
+        Address: 384 Woods Hole Road
+        City: Woods Hole
+        State_or_Province: Massachusetts
+        Postal_Code: 02543-1598
+        Country: USA
+      Contact_Voice_Telephone: 508.548.8700 x2290
+      Contact_Facsimile_Telephone: 508.457.2310
+      Contact_Electronic_Mail_Address: gwilliams@usgs.gov
+      Hours_of_Service: 8:00AM to 5:00PM; M-F
+  Metadata_Standard_Name: FGDC Content Standards for Digital Geospatial Metadata
+  Metadata_Standard_Version: FGDC-STD-001-1998
+  Metadata_Time_Convention: local time
+  Metadata_Access_Constraints: None
+  Metadata_Use_Constraints: None
+  Metadata_Extensions:
+    Online_Linkage: http://www.esri.com/metadata/esriprof80.html
+    Profile_Name: ESRI Metadata Profile

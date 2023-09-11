@@ -1,0 +1,294 @@
+## Counterfactual scenarios {.tabset}
+
+
+```{r, include = FALSE}
+
+# Load in model fit 
+if(!exists("scenarios_out")){
+      scenarios_out <- qread(here("output", "counterfactual-scenario-output.qs"))
+}
+
+if(!exists("date_fitting")){
+  date_fitting <- "2021-12-15" 
+}
+
+if(!exists("burden_out")){
+      tradeoff <- qread(here("output", "counterfactual-trade-off-output.qs"))
+      burden_out <- tradeoff$burden_table
+}
+
+
+```
+
+
+```{r, include = FALSE}
+
+fit_wide <- pivot_wider(scenarios_out$no_vacc$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- as.data.table(fit_wide)
+
+pal <- c("Original model fit" = "#133E7E", "No vaccination" = "#6B200C")
+
+plot_comp_death = ggplot(fit_wide[AgeBand == "All" & (ValueType == "deaths") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "No vaccination"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Deaths") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 12, family = plot_font), legend.title = element_blank())
+
+plot_comp_hosps <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "hosp_ad") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "No vaccination"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Hospital admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 12, family = plot_font), legend.title = element_blank())
+
+plot_comp_icu <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "No vaccination"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "ICU admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 12, family = plot_font), legend.title = element_blank())
+
+fig_3 <- plot_comp_hosps + plot_comp_icu + plot_comp_death + plot_layout(guides = "collect") & theme(legend.position = 'bottom', legend.justification = "centre")
+
+
+```
+
+### Figure 3
+
+```{r, fig.width = 10, fig.height = 5}
+fig_3
+```
+
+```{r, include = FALSE}
+
+# Pfizer 
+
+fit_wide <- pivot_wider(scenarios_out$pfizer$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- as.data.table(fit_wide)
+
+pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
+
+plot_comp_death_1 = ggplot(fit_wide[AgeBand == "All" & (ValueType == "deaths") & date <= as.Date("2021-12-15")]) +
+  # geom_col(data = data[ValueType == "Deaths" & d <= as.Date("2021-12-16")], aes(x = d, y = y), width = 1, alpha = 0.4, fill = "#252525") +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Deaths") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_hosps_1 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "hosp_ad") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Hospital admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_icu_1 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "ICU admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+
+row_1 <- ggarrange(plot_comp_hosps_1, plot_comp_icu_1, plot_comp_death_1, nrow = 1, common.legend = TRUE, legend = "none", labels = c("A", "B", "C"))
+row_1 <- annotate_figure(row_1, left = text_grob("Pfizer efficacy", color = "black", rot = 90, size = 14, family = plot_font))
+
+
+# Pfizer delay
+
+fit_wide <- pivot_wider(scenarios_out$pfizer_delay$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- as.data.table(fit_wide)
+
+pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
+
+plot_comp_death_2 = ggplot(fit_wide[AgeBand == "All" & (ValueType == "deaths") & date <= as.Date("2021-12-15")]) +
+  # geom_col(data = data[ValueType == "Deaths" & d <= as.Date("2021-12-16")], aes(x = d, y = y), width = 1, alpha = 0.4, fill = "#252525") +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Deaths") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_hosps_2 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "hosp_ad") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Hospital admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+
+plot_comp_icu_2 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "ICU admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+row_2 <- ggarrange(plot_comp_hosps_2, plot_comp_icu_2, plot_comp_death_2, nrow = 1, common.legend = TRUE, legend = "none", labels = c("A", "B", "C"))
+row_2 <- annotate_figure(row_2, left = text_grob("Pfizer efficacy and delay", color = "black", rot = 90, size = 14, family = plot_font))
+
+# AZ efficacy
+
+fit_wide <- pivot_wider(scenarios_out$az$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- as.data.table(fit_wide)
+
+pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
+
+plot_comp_death_3 = ggplot(fit_wide[AgeBand == "All" & (ValueType == "deaths") & date <= as.Date("2021-12-15")]) +
+  #geom_col(data = data[ValueType == "Deaths" & d <= as.Date("2021-12-16")], aes(x = d, y = y), width = 1, alpha = 0.4, fill = "#252525") +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Deaths") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_hosps_3 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "hosp_ad") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Hospital admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_icu_3 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "ICU admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+row_3 <- ggarrange(plot_comp_hosps_3, plot_comp_icu_3, plot_comp_death_3, nrow = 1, common.legend = TRUE, legend = "none", labels = c("A", "B", "C"))
+row_3 <- annotate_figure(row_3, left = text_grob("AZ efficacy", color = "black", rot = 90, size = 14, family = plot_font))
+
+# AZ efficacy and delay
+
+fit_wide <- pivot_wider(scenarios_out$az_delay$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- as.data.table(fit_wide)
+
+pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
+
+plot_comp_death_4 = ggplot(fit_wide[AgeBand == "All" & (ValueType == "deaths") & date <= as.Date("2021-12-15")]) +
+  #geom_col(data = data[ValueType == "Deaths" & d <= as.Date("2021-12-16")], aes(x = d, y = y), width = 1, alpha = 0.4, fill = "#252525") +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Deaths") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank())
+
+plot_comp_hosps_4 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "hosp_ad") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "Hospital admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 14, family = plot_font), legend.title = element_blank())
+
+
+plot_comp_icu_4 <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & date <= as.Date("2021-12-15")]) +
+  geom_line(aes(x = date, y = Value_Scenario,color = "Scenario"),  lwd = 0.7) +
+  geom_line(aes(x = date, y = Value_Baseline, color = "Original model fit"),lwd = 0.7) +
+  scale_x_date(breaks = "3 months", labels = scales::label_date_short()) +
+  scale_color_manual(values = pal) +
+  labs(x = NULL, y = "ICU admissions") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 13, family = plot_font), legend.title = element_blank())
+
+row_4 <- ggarrange(plot_comp_hosps_4, plot_comp_icu_4, plot_comp_death_4, nrow = 1, legend = "none", labels = c("A", "B", "C"))
+row_4 <- annotate_figure(row_4, left = text_grob("AZ efficacy and delay", color = "black", rot = 90, size = 14, family = plot_font))
+
+legend <- get_legend(plot_comp_hosps_4 + theme(legend.position="bottom"))
+fig_4 <- row_1 / row_2 / row_3 / row_4 / legend + plot_layout(heights = c(1, 1,1,1, 0.2)) & theme(legend.position = 'bottom', legend.justification = "centre")
+
+```
+
+### Figure 4
+
+```{r, fig.height = 10, fig.width = 12}
+fig_4
+```
+
+```{r, include = FALSE}
+
+cont_death <- ggplot(subset(burden_out, ValueType == "deaths" & contact != -0.5 & contact != 0.5), aes(x = (-contact)*100, y = vaccination*100, z = value)) +
+  metR::geom_contour_fill(aes(fill = stat(level)), breaks = pretty(c(min(burden_out$value[burden_out$ValueType == "deaths"]), max(burden_out$value[burden_out$ValueType == "deaths"])), n = 16)) +
+  geom_point(aes(x = 0, y = 43), shape = 4) +
+  labs(x = "Simulated change in mobility (%)", y = "Simulated vaccination coverage (%)", fill = "Deaths") +
+  scale_fill_gradient2(super = metR::ScaleDiscretised, high = muted("red"), low = muted("blue"), guide = guide_colorsteps(barheight = 20)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 12, family = plot_font),
+        legend.title = element_text(family = plot_font, size = 11), legend.text = element_text(family = plot_font, size = 9))
+
+
+cont_hosp <- ggplot(subset(burden_out, ValueType == "hosp_ad" & contact != -0.5 & contact != 0.5), aes(x = (-contact)*100, y = vaccination*100, z = value)) +
+  metR::geom_contour_fill(aes(fill = stat(level)), breaks = pretty(c(min(burden_out$value[burden_out$ValueType == "hosp_ad"]), max(burden_out$value[burden_out$ValueType == "hosp_ad"])), n = 16)) +
+  geom_point(aes(x = 0, y = 43), shape = 4) +
+  labs(x = "Simulated change in mobility (%)", y = "Simulated vaccination coverage (%)", fill = "Hospital\nAdmissions") +
+  scale_fill_gradient2(super = metR::ScaleDiscretised, high = muted("red"), low = muted("blue"), guide = guide_colorsteps(barheight = 20)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 12, family = plot_font),
+        legend.title = element_text(family = plot_font, size = 11), legend.text = element_text(family = plot_font, size = 9))
+
+
+cont_icu <- ggplot(subset(burden_out, ValueType == "icu_i" & contact != -0.5 & contact != 0.5), aes(x = (-contact)*100, y = vaccination*100, z = value)) +
+  metR::geom_contour_fill(aes(fill = stat(level)), breaks = pretty(c(min(burden_out$value[burden_out$ValueType == "icu_i"]), max(burden_out$value[burden_out$ValueType == "icu_i"])), n = 16)) +
+  geom_point(aes(x = 0, y = 43), shape = 4) +
+  labs(x = "Simulated change in mobility (%)", y = "Simulated vaccination coverage (%)", fill = "ICU\nAdmissions") +
+  scale_fill_gradient2(super = metR::ScaleDiscretised, high = muted("red"), low = muted("blue"), guide = guide_colorsteps(barheight = 20)) +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 12, family = plot_font),
+        legend.title = element_text(family = plot_font, size = 11), legend.text = element_text(family = plot_font, size = 9))
+
+fig_6 <- ggarrange(cont_hosp, cont_icu, cont_death, ncol = 3, font.label = list(family = plot_font), labels = c("A", "B", "C"))
+
+
+```
+
+### Figure 6
+
+```{r, fig.height = 5, fig.width = 15}
+fig_6
+```
+

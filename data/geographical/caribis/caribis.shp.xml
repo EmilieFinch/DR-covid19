@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE metadata SYSTEM "http://www.fgdc.gov/metadata/fgdc-std-001-1998.dtd">
+<metadata>
+	<idinfo>
+		<citation>
+			<citeinfo>
+				<origin>Glynn Williams</origin>
+				<pubdate>2004</pubdate>
+				<title>caribis - Caribbean Island Nations Coastline Boundaries</title>
+				<geoform>vector digital data</geoform>
+				<serinfo>
+					<sername>Open-File Report</sername>
+					<issue>2004-1400</issue>
+				</serinfo>
+				<pubinfo>
+					<pubplace>Woods Hole, MA</pubplace>
+					<publish>U.S. Geological Survey</publish>
+				</pubinfo>
+				<onlink>http://pubs.usgs.gov/of/2004/ofr2004-1400/data/boundaries/caribis/caribis.zip</onlink>
+				<onlink></onlink>
+				<lworkcit>
+					<citeinfo>
+						<origin>Uri ten Brink</origin>
+						<origin>William Danforth</origin>
+						<origin>Chris Polloni</origin>
+						<origin>Castle Eugene Parker</origin>
+						<origin>Toshi Uozumi</origin>
+						<origin>Glynn Williams</origin>
+						<pubdate>2004</pubdate>
+						<title>Project PROBE Leg II - Final Report and Archive of Swath Bathymetric Sonar, CTD/XBT and GPS Navigation Data Collected During USGS Cruise 03008 (NOAA Cruise RB0303) Puerto Rico Trench 18 February - 7 March, 2003</title>
+						<serinfo>
+							<sername>Open-file Report</sername>
+							<issue>2004-1400</issue>
+						</serinfo>
+						<pubinfo>
+							<pubplace>Woods Hole, Massachusetts</pubplace>
+							<publish>U.S. Geological Survey, Coastal and Marine Geology Program</publish>
+						</pubinfo>
+						<onlink>http://pubs.usgs.gov/of/2004/ofr2004-1400/</onlink>
+					</citeinfo>
+				</lworkcit>
+				<ftname Sync="TRUE">caribis</ftname></citeinfo>
+		</citation>
+		<descript>
+			<abstract>The Caribbean Island Nation data set is a shapefile polygon modeling the coastlines of the countries in the region.  Shapefile format provides compatibility with georeferenced raster imagery used in a Geographic Information System (GIS).  In addition, this data set provides a relational perspective view (s) in a GIS of the survey area surrounding the Puerto Rico trench.</abstract>
+			<purpose>To supplement the main featured mosaic image of the Puerto Rico trench survey area in a GIS.</purpose>
+			<langdata Sync="TRUE">en</langdata></descript>
+		<timeperd>
+			<timeinfo>
+				<sngdate>
+					<caldate>1998</caldate>
+				</sngdate>
+			</timeinfo>
+			<current>publication date</current>
+		</timeperd>
+		<status>
+			<progress>Complete</progress>
+			<update>None planned</update>
+		</status>
+		<spdom>
+			<bounding>
+				<westbc>
+-84.953339</westbc>
+				<eastbc>
+-59.426949</eastbc>
+				<northbc>
+26.929165</northbc>
+				<southbc>
+10.037498</southbc>
+			</bounding>
+			<lboundng><leftbc Sync="TRUE">-84.953339</leftbc><rightbc Sync="TRUE">-59.426949</rightbc><bottombc Sync="TRUE">10.037498</bottombc><topbc Sync="TRUE">26.929165</topbc></lboundng></spdom>
+		<keywords>
+			<theme>
+				<themekt>General</themekt>
+				<themekey>USGS</themekey>
+				<themekey>Coastal and Marine Geology Program</themekey>
+				<themekey>CMGP</themekey>
+				<themekey>NOAA Office of Ocean Exploration</themekey>
+				<themekey>trench</themekey>
+				<themekey>U.S. Geological Survey</themekey>
+				<themekey>coastline</themekey>
+				<themekey>vector shoreline</themekey>
+				<themekey>shapefile polyline</themekey>
+			</theme>
+			<place>
+				<placekt>General</placekt>
+				<placekey>Anguilla</placekey>
+				<placekey>Antigua</placekey>
+				<placekey>Barbuda</placekey>
+				<placekey>Aruba</placekey>
+				<placekey>Bahamas</placekey>
+				<placekey>Barbados</placekey>
+				<placekey>British Virgin Islands</placekey>
+				<placekey>Cayman Islands</placekey>
+				<placekey>Cuba</placekey>
+				<placekey>Dominica</placekey>
+				<placekey>Dominica Republic</placekey>
+				<placekey>Grenada</placekey>
+				<placekey>Guadeloupe</placekey>
+				<placekey>Haiti</placekey>
+				<placekey>Jamaica</placekey>
+				<placekey>Martinique</placekey>
+				<placekey>Montserrat</placekey>
+				<placekey>Netherlands Antilles</placekey>
+				<placekey>Puerto Rico</placekey>
+				<placekey>St Kitts</placekey>
+				<placekey>Nevis</placekey>
+				<placekey>St Lucia</placekey>
+				<placekey>St Vincent</placekey>
+				<placekey>Grenadines</placekey>
+				<placekey>Trinidad</placekey>
+				<placekey>Tobago</placekey>
+				<placekey>Turks Islands</placekey>
+				<placekey>Caicos Islands</placekey>
+				<placekey>Virgin Islands</placekey>
+			</place>
+		</keywords>
+		<accconst>None</accconst>
+		<useconst>These data are not to be used for navigation purposes.</useconst>
+		<ptcontac>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>U.S. Geological Survey</cntorg>
+					<cntper>Glynn Williams (ed.)</cntper>
+				</cntorgp>
+				<cntpos>Spatial Data Technician</cntpos>
+				<cntaddr>
+					<addrtype>mailing and physical address</addrtype>
+					<address>384 Woods Hole Road</address>
+					<city>Woods Hole</city>
+					<state>Massachusetts</state>
+					<postal>02543-2310</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>508.548.8700 x2290</cntvoice>
+				<cntfax>508.457.2310</cntfax>
+				<cntemail>gwilliams@usgs.gov</cntemail>
+				<hours>8:00AM to 5:00PM; M-F</hours>
+			</cntinfo>
+		</ptcontac>
+		<datacred>U.S. Geological Survey</datacred>
+		<native>Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</native>
+		<natvform Sync="TRUE">Shapefile</natvform></idinfo>
+	<dataqual>
+		<complete>complete</complete>
+		<posacc>
+			<horizpa>
+			</horizpa>
+			<vertacc>
+			</vertacc>
+		</posacc>
+		<lineage>
+			<procstep>
+				<procdesc>This data set is a subset of another Caribbean Island vector data set found in ESRI's Data &amp; Maps CD-ROM; 19990801.</procdesc>
+				<procdate>20040723</procdate>
+				<proccont>
+					<cntinfo>
+						<cntperp>
+							<cntper>Glynn Williams</cntper>
+							<cntorg>U.S. Geological Survey</cntorg>
+						</cntperp>
+						<cntpos>Spatial Analyst</cntpos>
+						<cntaddr>
+							<addrtype>mailing and physical address</addrtype>
+							<address>384 Woods Hole Road</address>
+							<city>Woods Hole</city>
+							<state>Massachusetts</state>
+							<postal>02543-1598</postal>
+							<country>USA</country>
+						</cntaddr>
+						<cntvoice>508.548.8700.x2290</cntvoice>
+						<cntfax>508-457-2310</cntfax>
+						<cntemail>gwilliams@usgs.gov</cntemail>
+						<hours>8AM to 5PM; M-F</hours>
+					</cntinfo>
+				</proccont>
+			</procstep>
+		</lineage>
+	</dataqual>
+	<spdoinfo>
+		<direct>Vector</direct>
+		<ptvctinf>
+			<sdtsterm Name="caribis">
+				<sdtstype>G-polygon</sdtstype>
+				<ptvctcnt>24</ptvctcnt>
+			</sdtsterm>
+			<esriterm Name="caribis"><efeatyp Sync="TRUE">Simple</efeatyp><efeageom Sync="TRUE">Polygon</efeageom><esritopo Sync="TRUE">FALSE</esritopo><efeacnt Sync="TRUE">24</efeacnt><spindex Sync="TRUE">TRUE</spindex><linrefer Sync="TRUE">FALSE</linrefer></esriterm></ptvctinf>
+	</spdoinfo>
+	<spref>
+		<horizsys>
+			<geograph>
+				<latres>0.00001</latres>
+				<longres>0.00001</longres>
+				<geogunit>Decimal degrees</geogunit>
+			</geograph>
+			<geodetic>
+				<horizdn>D_WGS_1984</horizdn>
+				<ellips>WGS_1984</ellips>
+				<semiaxis>6378137.000000</semiaxis>
+				<denflat>298.257224</denflat>
+			</geodetic>
+			<cordsysn><geogcsn Sync="TRUE">GCS_WGS_1984</geogcsn></cordsysn></horizsys>
+		<vertdef>
+			<altsys>
+				<altdatum>assumed sea level</altdatum>
+				<altres>1</altres>
+				<altunits>meters</altunits>
+				<altenc>Attribute values</altenc>
+			</altsys>
+			<depthsys>
+			</depthsys>
+		</vertdef>
+	</spref>
+	<eainfo>
+		<detailed Name="caribis">
+			<enttyp>
+				<enttypl>
+caribis</enttypl>
+				<enttypd>Shapefile attribute table</enttypd>
+				<enttypds>ESRI</enttypds>
+				<enttypt Sync="TRUE">Feature Class</enttypt><enttypc Sync="TRUE">24</enttypc></enttyp>
+			<attr>
+				<attrlabl>FID</attrlabl>
+				<attrdef>Internal feature number.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Sequential unique whole numbers that are automatically generated.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">FID</attalias><attrtype Sync="TRUE">OID</attrtype><attwidth Sync="TRUE">4</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>Shape</attrlabl>
+				<attrdef>Feature geometry.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Coordinates defining the features.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">Shape</attalias><attrtype Sync="TRUE">Geometry</attrtype><attwidth Sync="TRUE">0</attwidth><atprecis Sync="TRUE">0</atprecis><attscale Sync="TRUE">0</attscale></attr>
+			<attr>
+				<attrlabl>CNTRY_NAME</attrlabl>
+				<attrdef>country name.</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attrdomv>
+					<udom>Coordinates defining the features.</udom>
+				</attrdomv>
+				<attalias Sync="TRUE">CNTRY_NAME</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">40</attwidth></attr>
+			<attr>
+				<attrlabl>COUNT</attrlabl>
+				<attrdef>the square miles of an area</attrdef>
+				<attrdefs>ESRI</attrdefs>
+				<attalias Sync="TRUE">COUNT</attalias><attrtype Sync="TRUE">Number</attrtype><attwidth Sync="TRUE">11</attwidth></attr>
+			<attr>
+				<attrlabl>FIRST_FIPS</attrlabl>
+				<attrdef>First order of an abbreviation</attrdef>
+				<attrdefs>Federal Infomration Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">FIRST_FIPS</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">2</attwidth></attr>
+			<attr>
+				<attrlabl>FIRST_REGI</attrlabl>
+				<attrdef>First order name of a region</attrdef>
+				<attrdefs>Federal Information Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">FIRST_REGI</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">21</attwidth></attr>
+			<attr>
+				<attrlabl>FIRST_CONT</attrlabl>
+				<attrdef>First order name of a continent</attrdef>
+				<attrdefs>Information Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">FIRST_CONT</attalias><attrtype Sync="TRUE">String</attrtype><attwidth Sync="TRUE">13</attwidth></attr>
+			<attr>
+				<attrlabl>SUM_POP_AD</attrlabl>
+				<attrdef>The administrative sum of a population</attrdef>
+				<attrdefs>Information Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">SUM_POP_AD</attalias><attrtype Sync="TRUE">Number</attrtype><attwidth Sync="TRUE">18</attwidth><atnumdec Sync="TRUE">4</atnumdec></attr>
+			<attr>
+				<attrlabl>SUM_SQKM_A</attrlabl>
+				<attrdef>The sum of the squared kilometer area</attrdef>
+				<attrdefs>Information Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">SUM_SQKM_A</attalias><attrtype Sync="TRUE">Number</attrtype><attwidth Sync="TRUE">18</attwidth><atnumdec Sync="TRUE">4</atnumdec></attr>
+			<attr>
+				<attrlabl>SUM_SQMI_A</attrlabl>
+				<attrdef>The sum of the square miled area</attrdef>
+				<attrdefs>Information Processing Standards (FIPS)</attrdefs>
+				<attalias Sync="TRUE">SUM_SQMI_A</attalias><attrtype Sync="TRUE">Number</attrtype><attwidth Sync="TRUE">18</attwidth><atnumdec Sync="TRUE">4</atnumdec></attr>
+		</detailed>
+	</eainfo>
+	<distinfo>
+		<distrib>
+			<cntinfo>
+				<cntperp>
+					<cntper>Uri ten Brink</cntper>
+					<cntorg>U.S. Geological Survey</cntorg>
+				</cntperp>
+				<cntpos>Research Scientist</cntpos>
+				<cntaddr>
+					<addrtype>mailing address</addrtype>
+					<address>384  Woods Hole Road</address>
+					<city>Woods Hole</city>
+					<state>MA</state>
+					<postal>02543-1598</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>508.548.8700.x2396</cntvoice>
+				<cntfax>508.457.2310</cntfax>
+				<cntemail>utenbrink@usgs.gov</cntemail>
+			</cntinfo>
+		</distrib>
+		<resdesc>Downloadable Data: Open-File Report 2004-1400</resdesc>
+		<distliab>Although this dataset has been used by the U.S. Geological Survey, no warranty, expressed or implied, is made by the USGS as to the accuracy of the data and/or related materials.  The act of distribution shall not constitute any such warranty, and no responsibility is assumed by the USGS in the use of these data or related materials.</distliab>
+		<stdorder>
+			<digform>
+				<digtinfo>
+					<formname>ArcView shapefile</formname>
+					<formvern>3.2</formvern>
+					<formspec>ESRI polygon shapefile</formspec>
+					<formcont>The six files (caribis.dbf, caribis.prj, caribis.sbn, caribis.shp, caribis.shx caribis.xml)</formcont>
+					<filedec>zip</filedec>
+					<transize>12</transize>
+					<dssize Sync="TRUE">0.095</dssize></digtinfo>
+				<digtopt>
+					<offoptn>
+						<offmedia>DVD-ROM</offmedia>
+						<reccap>
+							<recden>4,700</recden>
+							<recdenu>Mbyte</recdenu>
+						</reccap>
+						<recfmt>UDF</recfmt>
+					</offoptn>
+				</digtopt>
+			</digform>
+			<fees>none</fees>
+		</stdorder>
+		<techpreq>The data is available in Environmental Systems Research Institute, Inc. (ESRI) shapefile format. The user must have ArcView 3.+ or ArcGIS 8.+ to read and process the data file. In lieu of ArcView/ArcGIS, the user may utilize another GIS application package capable of importing data.</techpreq>
+	</distinfo>
+	<metainfo>
+		<metd>20041102</metd>
+		<metc>
+			<cntinfo>
+				<cntorgp>
+					<cntorg>U.S. Geological Survey</cntorg>
+					<cntper>Glynn Williams</cntper>
+				</cntorgp>
+				<cntpos>Spatial Data Technician</cntpos>
+				<cntaddr>
+					<addrtype>physical address</addrtype>
+					<address>384 Woods Hole Road</address>
+					<city>Woods Hole</city>
+					<state>Massachusetts</state>
+					<postal>02543-1598</postal>
+					<country>USA</country>
+				</cntaddr>
+				<cntvoice>508.548.8700 x2290</cntvoice>
+				<cntfax>508.457.2310</cntfax>
+				<cntemail>gwilliams@usgs.gov</cntemail>
+				<hours>8:00AM to 5:00PM; M-F</hours>
+			</cntinfo>
+		</metc>
+		<metstdn>FGDC Content Standards for Digital Geospatial Metadata</metstdn>
+		<metstdv>FGDC-STD-001-1998</metstdv>
+		<mettc>local time</mettc>
+		<metac>None</metac>
+		<metuc>None</metuc>
+		<langmeta Sync="TRUE">en</langmeta><metextns><onlink Sync="TRUE">http://www.esri.com/metadata/esriprof80.html</onlink><metprof Sync="TRUE">ESRI Metadata Profile</metprof></metextns></metainfo>
+	<dataIdInfo><envirDesc Sync="TRUE">Microsoft Windows 2000 Version 5.1 (Build 2600) Service Pack 2; ESRI ArcCatalog 8.3.0.800</envirDesc><dataLang><languageCode Sync="TRUE" value="en"></languageCode></dataLang><idCitation><resTitle Sync="TRUE">caribis</resTitle><presForm><PresFormCd Sync="TRUE" value="005"></PresFormCd></presForm></idCitation><spatRpType><SpatRepTypCd Sync="TRUE" value="001"></SpatRepTypCd></spatRpType><dataExt><geoEle><GeoBndBox esriExtentType="native"><westBL Sync="TRUE">-84.953339</westBL><eastBL Sync="TRUE">-59.426949</eastBL><northBL Sync="TRUE">26.929165</northBL><southBL Sync="TRUE">10.037498</southBL><exTypeCode Sync="TRUE">1</exTypeCode></GeoBndBox></geoEle></dataExt><geoBox esriExtentType="decdegrees"><westBL Sync="TRUE">-84.953339</westBL><eastBL Sync="TRUE">-59.426949</eastBL><northBL Sync="TRUE">26.929165</northBL><southBL Sync="TRUE">10.037498</southBL><exTypeCode Sync="TRUE">1</exTypeCode></geoBox></dataIdInfo><mdLang><languageCode Sync="TRUE" value="en"></languageCode></mdLang><mdStanName Sync="TRUE">ISO 19115 Geographic Information - Metadata</mdStanName><mdStanVer Sync="TRUE">DIS_ESRI1.0</mdStanVer><mdChar><CharSetCd Sync="TRUE" value="004"></CharSetCd></mdChar><mdHrLv><ScopeCd Sync="TRUE" value="005"></ScopeCd></mdHrLv><mdHrLvName Sync="TRUE">dataset</mdHrLvName><distInfo><distributor><distorTran><onLineSrc><orDesc Sync="TRUE">002</orDesc><linkage Sync="TRUE">file://\\Thunder\ofr2004-1400\data\boundaries\caribis\caribis.shp</linkage><protocol Sync="TRUE">Local Area Network</protocol></onLineSrc><transSize Sync="TRUE">0.095</transSize></distorTran><distorFormat><formatName Sync="TRUE">Shapefile</formatName></distorFormat></distributor></distInfo><refSysInfo><RefSystem><refSysID><identCode Sync="TRUE">GCS_WGS_1984</identCode></refSysID></RefSystem></refSysInfo><spatRepInfo><VectSpatRep><topLvl><TopoLevCd Sync="TRUE" value="001"></TopoLevCd></topLvl><geometObjs Name="caribis"><geoObjTyp><GeoObjTypCd Sync="TRUE" value="001"></GeoObjTypCd></geoObjTyp><geoObjCnt Sync="TRUE">24</geoObjCnt></geometObjs></VectSpatRep></spatRepInfo><Esri><SyncDate>20041216</SyncDate><SyncTime>16541800</SyncTime><ModDate>20041216</ModDate><ModTime>16543300</ModTime></Esri><mdDateSt Sync="TRUE">20041216</mdDateSt></metadata>

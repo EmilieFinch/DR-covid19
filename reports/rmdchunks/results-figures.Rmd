@@ -1,0 +1,318 @@
+## Results {.tabset}
+
+```{r, include = FALSE}
+
+# Load in model fit 
+if(!exists("mod_fit")){
+      mod_out <- qread(here("output", "main-model-output.qs"))
+      mod_fit <- mod_out$model_fit
+}
+
+if(!exists("mod_run")){
+  dynamics <- read_dynamics()
+} else {
+  dynamics <- mod_run$dynamics
+}
+
+if(!exists("date_fitting")){
+  date_fitting <- "2021-12-15" 
+}
+
+if(!exists("opt_mobility")){
+  opt_mobility <- "comix-base" 
+}
+
+fit_data <- mod_fit[[1]]
+fit_output <- mod_fit[[2]]
+
+fit_output <- fit_output[d <= date_fitting]
+fit_data <- fit_data[d <= date_fitting]
+
+```
+
+```{r, include = FALSE}
+
+# Plot model fit
+
+theme_set(cowplot::theme_cowplot(font_size = 10) + theme(strip.background = element_blank()))
+linetypes = c("Deaths", "Hospital\nadmissions", "Hospital beds\noccupied", "ICU beds\noccupied")
+
+library(MetBrewer)
+pal <-met.brewer("Java", 4)
+
+
+plot_death <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Deaths")]) +
+  geom_line(data = fit_data[ValueType == "Deaths"], aes(x = d, y = y), size = 0.3) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[1]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`), alpha = 0.4, fill = pal[1]) +
+  geom_line(aes(x = d, y = Value), color = pal[1]) +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Deaths")]$`Quantile 0.95`))) + 
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  labs(x = NULL, y = "Reported Deaths") +
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
+
+
+plot_sero <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & ValueType == "Seroprevalence\n(%)"]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[4]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`, fill = ValueType), alpha = 0.5, fill = pal[4]) +
+  geom_line(aes(x = d, y = Value), color = pal[4]) +
+  geom_line(data = fit_data[ValueType =="Seroprevalence\n(%)"], aes(x = d, y = y), size = 0.4) +
+  geom_point(data = fit_data[ValueType == "Seroprevalence\n(%)"], aes(x = d, y = y), size = 0.01, shape = 20) +
+  geom_linerange(data = fit_data[ValueType == "Seroprevalence\n(%)"], aes(x = d, ymin = ymin, ymax = ymax), size = 0.2) +
+  geom_linerange(data = fit_data[ValueType == "Seroprevalence\n(%)"], aes(xmin = dmin, xmax = dmax, y = y), size = 0.2) +
+  theme(legend.position = "none", strip.placement = "outside", strip.background = element_blank()) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  scale_y_continuous(breaks = seq(0,100, by = 20)) +
+  labs(x = NULL, y = "Previously Infected (%)") +
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+
+plot_hosps <-  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]) +
+  geom_line(data = fit_data[ValueType == "Hospital beds\noccupied"], aes(x = d, y = y), size = 0.3) +
+  geom_point(data = fit_data[ValueType == "Hospital beds\noccupied"], aes(x = d, y = y), size = 0.01, shape = 20) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[3]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`), alpha = 0.4, fill = pal[3]) +
+  geom_line(aes(x = d, y = Value), color = pal[3]) +
+  geom_vline(aes(xintercept = min(fit_data[ValueType == "Hospital beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
+  # coord_cartesian(ylim = c(0,150)) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  labs(x = NULL, y = "Hospital Beds Occupied") +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]$`Quantile 0.95`))) + 
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
+
+plot_icu <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]) +
+  geom_line(data = fit_data[ValueType == "ICU beds\noccupied"], aes(x = d, y = y), size = 0.3) +
+  geom_point(data = fit_data[ValueType == "ICU beds\noccupied"], aes(x = d, y = y), size = 0.01, shape = 20) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[2]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`), alpha = 0.4, fill = pal[2]) +
+  geom_line(aes(x = d, y = Value), color = pal[2]) +
+  geom_vline(aes(xintercept = min(fit_data[ValueType == "ICU beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
+  # coord_cartesian(ylim = c(0,150)) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  labs(x = NULL, y = "ICU Beds Occupied") +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]$`Quantile 0.95`))) + 
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
+
+fig_1 <- ggarrange(plot_hosps, plot_icu, plot_death, plot_sero, nrow = 4, labels = c("A", "B", "C", "D"))
+
+```
+
+### Figure 1
+
+```{r, fig.width = 12, fig.height = 9}
+fig_1
+```
+
+
+```{r, include = FALSE}
+
+plot_death_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "Deaths")]) +
+  geom_area(aes(x = d, y = Value, fill = AgeBand)) +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "Deaths")]$`Quantile 0.95`))) + 
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  labs(x = NULL, y = "Reported Deaths", fill = "Age") +
+  scale_fill_manual(values = met.brewer("Archambault", direction = -1)) +
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font), legend.title = element_text(size = 9, family = plot_font))
+
+
+plot_sero_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & ValueType == "Seroprevalence\n(%)"]) +
+  geom_line(aes(x = d, y = Value, col = AgeBand)) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  scale_y_continuous(breaks = seq(0,100, by = 20)) +
+  scale_color_manual(values = met.brewer("Archambault", direction = -1)) +
+  labs(x = "", y = "Previously Infected (%)", col = "Age") +
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+
+plot_hosps_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "Hospital beds\noccupied")]) +
+  geom_area(aes(x = d, y = Value, fill = AgeBand)) +
+  geom_vline(aes(xintercept = min(fit_data[ValueType == "Hospital beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
+  # coord_cartesian(ylim = c(0,150)) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  scale_fill_manual(values = met.brewer("Archambault", direction = -1)) +
+  labs(x = NULL, y = "Hospital Beds Occupied", fill = "Age") +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]$`Quantile 0.95`))) + 
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+
+plot_icu_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "ICU beds\noccupied")]) +
+  geom_area(aes(x = d, y = Value, fill = AgeBand)) +
+  geom_vline(aes(xintercept = min(fit_data[ValueType == "ICU beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
+  # coord_cartesian(ylim = c(0,150)) +
+  scale_fill_manual(values = met.brewer("Archambault", direction = -1)) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
+  labs(x = NULL, y = "ICU Beds Occupied", fill = "Age") +
+  coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]$`Quantile 0.95`))) + 
+  theme_classic() +
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
+        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+
+fig_s_2 <- ggarrange(plot_hosps_age, plot_icu_age,  plot_sero_age, plot_death_age, nrow = 4, labels = c("A", "B", "C", "D"), heights = c(1,1,1,1.2))
+
+
+```
+
+### Figure S.2
+
+```{r, fig.height = 10, fig.width = 15}
+fig_s_2
+```
+
+### Figure 2
+
+```{r}
+
+plot_r <-  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "R0" | ValueType == "Rt")]) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`, fill = ValueType), alpha = 0.3) +
+  geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`, fill = ValueType), alpha = 0.4) +
+  geom_line(aes(x = d, y = Value, col = ValueType)) +
+  geom_vline(aes(xintercept = as.Date("2021-05-03")), size = 0.3,  col = "#737373") +
+  annotate("text", x=as.Date("2021-05-23"), y=6, label="Mu \n increasing", size = 3,  family = plot_font, col = "black") +
+  geom_vline(aes(xintercept = as.Date("2021-08-02")), size = 0.3,  col = "#737373") +
+  annotate("text", x=as.Date("2021-08-22"), y=6, label="Delta \n increasing", size = 3,family = plot_font, col = "black") +
+  scale_color_manual(values = c("#40004B", "#1B7837")) +
+  scale_fill_manual(values =c("#40004B", "#1B7837")) +
+  geom_hline(yintercept = 1, lty = "longdash") +
+  labs(x = "Date", y = "R0 and Rt", fill = "", col = "") +
+  theme_classic() +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
+  theme(axis.title = element_text(size = 9, family = plot_font), axis.text.x = element_text(size = 9, vjust = 0.5, hjust=0.5, family = plot_font), axis.title.y = element_text(size = 10, family = plot_font), legend.position = "bottom")
+
+```
+
+```{r}
+contacts <- generate_contacts(mod_out$parameters[[1]]$schedule, mod_out$posteriors, opt_mobility)
+cols <- natparks.pals("Volcanoes",5)
+contact_plot <- ggplot() +
+  geom_hline(aes(yintercept = 1), lty = "dashed", alpha = 0.7) +
+  geom_line(aes(x = contacts$contact_times + as.Date("2020-01-01"), y = contacts$fin_home, col = cols[1]), size = 0.4) +
+  geom_line(aes(x = contacts$contact_times + as.Date("2020-01-01"), y = contacts$fin_wplc, col = cols[3]), size = 0.4) +
+  geom_line(aes(x = contacts$contact_times + as.Date("2020-01-01"), y = contacts$fin_scho, col = cols[4]), size = 0.4) +
+  geom_line(aes(x = contacts$contact_times + as.Date("2020-01-01"), y = contacts$fin_othx, col = cols[5]), size = 0.4) +
+  coord_cartesian(xlim = c(as.Date("2020-01-01"), as.Date(date_fitting))) +
+  scale_color_manual(values = cols, labels = c("Home",  "Work", "School", "Other")) +
+  labs(x = "Date", y = "Change in Contacts") +
+  scale_x_date(limits = c(as.Date("2020-01-01"), as.Date("2021-12-01")), breaks = "3 months", date_labels = "%b-%Y") +
+  scale_y_continuous(breaks = seq(0, max(contacts$fin_home), by = 0.2)) +
+  theme_classic() +
+  theme(legend.position = "bottom", legend.title = element_blank())
+
+```
+
+```{r}
+
+# Get today's date (needed for wrangle_dynamics)
+today <- Sys.Date()
+
+# Add age groups to dynamics data table
+dynamics <- dynamics %>% 
+  mutate(age_group = case_when(group == 1 ~ '0-4',
+                               group == 2 ~ '5-9',
+                               group == 3 ~ '10-14',
+                               group == 4 ~ '15-19',
+                               group == 5 ~ '20-24',
+                               group == 6 ~ '25-29',
+                               group == 7 ~ '30-34',
+                               group == 8 ~ '35-39',
+                               group == 9 ~ '40-44',
+                               group == 10 ~ '45-49',
+                               group == 11 ~ '50-54',
+                               group == 12 ~ '55-59',
+                               group == 13 ~ '60-64',
+                               group == 14 ~ '65-69',
+                               group == 15 ~ '70-74',
+                               group == 16 ~ '75+' ))
+
+summ_sus = dynamics[, .(sus = sum(S)), by = .(run, t, population, age_group)]
+summ_inf = dynamics[, .(inf = sum(E + Ip + Is + Ia + E2 + Ip2 + Is2 + Ia2)), by = .(run, t, population, age_group)]
+summ_rec =  dynamics[, .(rec = sum(R + R2)), by = .(run, t, population, age_group)]
+summ_vacc =  dynamics[, .(vacc = sum(V)), by = .(run, t, population, age_group)]
+
+immunity_states <- rbind(
+  wrangle_dynamics(summ_sus, "sus", "sus", year(today), month(today), day(today), "2020-01-01", as.character(ymd("2020-01-01") + max(dynamics$t)), -1),
+  wrangle_dynamics(summ_inf, "inf", "inf", year(today), month(today), day(today), "2020-01-01", as.character(ymd("2020-01-01") + max(dynamics$t)), -1),
+  wrangle_dynamics(summ_rec, "rec", "rec", year(today), month(today), day(today), "2020-01-01", as.character(ymd("2020-01-01") + max(dynamics$t)), -1),
+  wrangle_dynamics(summ_vacc, "vacc", "vacc", year(today), month(today), day(today), "2020-01-01", as.character(ymd("2020-01-01") + max(dynamics$t)), -1)
+)
+
+immunity_states[, d := make_date(`Year of Value`, `Month of Value`, `Day of Value`)]
+immunity_states <- immunity_states[d <= as.Date("2021-12-15")]
+
+immunity_states$AgeBand = factor(immunity_states$AgeBand, levels = c('0-4','5-9','10-14','15-19',
+                                                                     '20-24','25-29','30-34','35-39',
+                                                                     '40-44','45-49','50-54','55-59',
+                                                                     '60-64','65-69','70-74','75+', "All"))
+
+immunity_states$ValueType = factor(immunity_states$ValueType, levels = c('inf', 'sus', 'rec', 'vacc'))
+
+pal <- natparks.pals("BryceCanyon", n = 7)
+
+plot_immune_states <- ggplot(immunity_states[AgeBand == "All"]) +
+  geom_area(aes(d, Value, fill = ValueType), position = position_fill()) +
+  scale_fill_manual(values = met.brewer("Isfahan1", n = 4), labels = c("Infected", "Susceptible", "Post-infection Protection", "Vaccinated")) +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
+  labs(x = NULL, y = "Proportion of the Population") +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 9, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 8, family = plot_font), legend.title = element_blank(),legend.box.margin=margin(-1,-1,-1,-1))
+
+
+
+fig_2 <- ggarrange(plot_immune_states, contact_plot, plot_r, nrow = 3, labels = c("A", "B", "C"))
+
+```
+
+
+```{r, fig.height = 9, fig.width = 12}
+fig_2
+```
+
+### Figure S.3
+
+```{r}
+plot_immune_states_age <- ggplot(immunity_states[AgeBand != "All"]) +
+  geom_area(aes(d, Value, fill = ValueType), position = position_fill()) +
+  scale_fill_manual(values = met.brewer("Isfahan1", n = 4), labels = c("Infected", "Susceptible", "Post-infection Protection", "Vaccinated")) +
+  facet_wrap(~ AgeBand, ncol = 4) +
+  labs(x = NULL, y = "Proportion of the Population") +
+  scale_x_date(breaks = "3 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
+  theme_classic() +
+  theme(axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 10, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 8, family = plot_font), legend.title = element_blank())
+```
+
+```{r, fig.height = 12, fig.width = 12}
+plot_immune_states_age
+```
+
+### Figure S.1
+
+```{r}
+
+post <- rbindlist(mod_out$posteriors, idcol = "population")
+post[, pop := "Dominican Republic"]
+melted <- melt(post, id.vars = c(1:5, ncol(post)))
+post_plot <- ggplot(subset(melted, variable != "tS")) + 
+  geom_density(aes(x = value), col = "red") + 
+  facet_wrap(~variable, scales = "free") +
+  labs(x = "", y = "") +
+  theme_classic() +
+  theme(strip.background = element_blank()) 
+
+```
+
+```{r, fig.height = 8, fig.width = 12}
+post_plot
+```
+

@@ -1,0 +1,67 @@
+---
+title: "manuscript-figures"
+author: "Emilie Finch"
+date: "Generated on `r Sys.Date()`"
+output: 
+  html_document:
+      keep_md: false
+      toc: true
+      toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  echo = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 7
+)
+
+```
+
+```{r}
+library(dplyr)
+library(qs)
+library(ggplot2)
+library(here)
+library(ggpubr)
+library(MetBrewer)
+library(sf)
+library(tidyr)
+library(stringr)
+library(sysfonts)
+library(showtext)
+library(tmaptools)
+library(RColorBrewer)
+library(tidyquant)
+library(janitor)
+library(cowplot)
+library(Rcpp)
+library(NatParksPalettes)
+library(data.table)
+library(patchwork)
+library(scales)
+
+source(here("R", "utils.R"))
+source(here("R", "generate-fit_fns.R"))
+
+plot_font <- "Open Sans"
+font_add_google(plot_font)
+showtext_opts(dpi = 300)
+showtext_auto()
+
+```
+
+
+```{r methods-figures, child = "rmdchunks/methods-figures.Rmd"}
+```
+
+
+```{r results-figures, child = "rmdchunks/results-figures.Rmd"}
+```
+
+
+```{r counterfactual-results-figures, child = "rmdchunks/counterfactual-results-figures.Rmd"}
+```
+

@@ -1,0 +1,2 @@
+pos,n,Central.estimate,Start.date,End.date,Lower.bound,Upper.bound,xi,omega,alpha,Source,pid,NHS.region,Data.source
+2992,4169,76.84%,30/06/2021,17/10/2021,70.10%,82.50%,0.793783915,0.041397873,-1.385610579,Merian_Serosurvey,0,Dominican Republic,NA
