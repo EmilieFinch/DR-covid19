@@ -58,15 +58,15 @@ plot_comp_icu <- ggplot(fit_wide[AgeBand == "All" & (ValueType == "icu_i") & dat
   theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 12, family = plot_font), legend.title = element_blank())
 
-fig_3 <- plot_comp_hosps + plot_comp_icu + plot_comp_death + plot_layout(guides = "collect") & theme(legend.position = 'bottom', legend.justification = "centre")
+fig_6 <- plot_comp_hosps + plot_comp_icu + plot_comp_death + plot_layout(guides = "collect") & theme(legend.position = 'bottom', legend.justification = "centre")
 
 
 ```
 
-### Figure 3
+### Figure 6
 
 ```{r, fig.width = 10, fig.height = 5}
-fig_3
+fig_6
 ```
 
 ```{r, include = FALSE}
@@ -240,14 +240,14 @@ row_4 <- ggarrange(plot_comp_hosps_4, plot_comp_icu_4, plot_comp_death_4, nrow =
 row_4 <- annotate_figure(row_4, left = text_grob("AZ efficacy and delay", color = "black", rot = 90, size = 14, family = plot_font))
 
 legend <- get_legend(plot_comp_hosps_4 + theme(legend.position="bottom"))
-fig_4 <- row_1 / row_2 / row_3 / row_4 / legend + plot_layout(heights = c(1, 1,1,1, 0.2)) & theme(legend.position = 'bottom', legend.justification = "centre")
+fig_7 <- row_1 / row_2 / row_3 / row_4 / legend + plot_layout(heights = c(1, 1,1,1, 0.2)) & theme(legend.position = 'bottom', legend.justification = "centre")
 
 ```
 
-### Figure 4
+### Figure 7
 
 ```{r, fig.height = 10, fig.width = 12}
-fig_4
+fig_7
 ```
 
 ```{r, include = FALSE}
@@ -281,14 +281,14 @@ cont_icu <- ggplot(subset(burden_out, ValueType == "icu_i" & contact != -0.5 & c
   theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 12, family = plot_font),
         legend.title = element_text(family = plot_font, size = 11), legend.text = element_text(family = plot_font, size = 9))
 
-fig_6 <- ggarrange(cont_hosp, cont_icu, cont_death, ncol = 3, font.label = list(family = plot_font), labels = c("A", "B", "C"))
+fig_8 <- ggarrange(cont_hosp, cont_icu, cont_death, ncol = 3, font.label = list(family = plot_font), labels = c("A", "B", "C"))
 
 
 ```
 
-### Figure 6
+### Figure 8
 
 ```{r, fig.height = 5, fig.width = 15}
-fig_6
+fig_8
 ```
 
