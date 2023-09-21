@@ -1,7 +1,7 @@
 
 ## Methods {.tabset}
 
-### Figure 6
+### Figure 1
 
 ```{r, include = FALSE}
 
@@ -73,13 +73,13 @@ plot_cases <- ggplot(covid19_cases, aes(x= date, y = new_cases)) +
   theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font), axis.title = element_text(size = 9, family = plot_font))
 
 
-fig_6 <- ggarrange(maps, plot_cases, nrow = 2, heights = c(1, 0.75), labels = c("", "C"), vjust =-1, font.label = list(size = 14))
+fig_1 <- ggarrange(maps, plot_cases, nrow = 2, heights = c(1, 0.75), labels = c("", "C"), vjust =-1, font.label = list(size = 14))
 
-fig_6
+fig_1
 
 ```
 
-### Figure 7
+### Figure 2
 
 
 ```{r, include = FALSE}
@@ -232,10 +232,10 @@ gisaid_freq <- gisaid %>%
 
 
 row2 <- ggarrange(gisaid_freq, prop_vaccinated, nrow = 1, labels = c("B", "C"))
-fig_7 <- ggarrange(plot_gmobility, row2, nrow = 2, labels = c("A"))
+fig_2 <- ggarrange(plot_gmobility, row2, nrow = 2, labels = c("A"))
 ```
 
 ```{r, fig.width = 15, fig.height = 9}
-fig_7
+fig_2
 ```
 
