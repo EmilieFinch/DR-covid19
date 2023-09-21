@@ -100,14 +100,14 @@ plot_icu <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType =
   theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
 
-fig_1 <- ggarrange(plot_hosps, plot_icu, plot_death, plot_sero, nrow = 4, labels = c("A", "B", "C", "D"))
+fig_4 <- ggarrange(plot_hosps, plot_icu, plot_death, plot_sero, nrow = 4, labels = c("A", "B", "C", "D"))
 
 ```
 
-### Figure 1
+### Figure 4
 
 ```{r, fig.width = 12, fig.height = 9}
-fig_1
+fig_4
 ```
 
 
@@ -169,7 +169,7 @@ fig_s_2 <- ggarrange(plot_hosps_age, plot_icu_age,  plot_sero_age, plot_death_ag
 fig_s_2
 ```
 
-### Figure 2
+### Figure 5
 
 ```{r}
 
@@ -269,13 +269,13 @@ plot_immune_states <- ggplot(immunity_states[AgeBand == "All"]) +
 
 
 
-fig_2 <- ggarrange(plot_immune_states, contact_plot, plot_r, nrow = 3, labels = c("A", "B", "C"))
+fig_5 <- ggarrange(plot_immune_states, contact_plot, plot_r, nrow = 3, labels = c("A", "B", "C"))
 
 ```
 
 
 ```{r, fig.height = 9, fig.width = 12}
-fig_2
+fig_5
 ```
 
 ### Figure S.3
