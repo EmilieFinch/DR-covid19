@@ -24,7 +24,7 @@ Data required for the analysis can be found in the `data` folder and includes:
 - [GISAID sequence data](https://gisaid.org/) for the Dominican Republic
 - Age-dependent susceptibility and symptomatic rates from [Davies et al 2020](https://pubmed.ncbi.nlm.nih.gov/32546824/)
 
-Please note that data on the clusters shown in Figure 6 are not publicly available and are not included in this repo.
+Please note that data on the clusters shown in Figure 1 are not publicly available and are not included in this repo.
   
 
 
