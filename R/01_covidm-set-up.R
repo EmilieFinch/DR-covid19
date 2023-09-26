@@ -9,7 +9,7 @@ source(here("R", "cpp_fns.R"))
 source(here("R", "run-covidM_fns.R"))
 source(here("R", "generate-fit_fns.R"))
 source(here("R", "convergence_fns.R"))
-
+source(here("R", "counterfactual_fns.R"))
 
 # Load covidM
 
@@ -24,10 +24,10 @@ source(here(cm_path, "R/covidm.R"))
 
 REP_START = 1
 REP_END = 1
-BURN_IN = 10#3000
-ITER = 10#5000
-BURN_IN_FINAL = 20#3000
-ITER_FINAL = 20#5000 
+BURN_IN = 3000
+ITER = 5000
+BURN_IN_FINAL = 3000
+ITER_FINAL = 5000 
 N_THREADS = 10; # Number of threads for fitting, set to number of cores 
 
 

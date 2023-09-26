@@ -3,21 +3,6 @@
 # Author: Emilie Finch, adapted from code by Nick Davies in https://github.com/nicholasdavies/newcovid
 # -------------------------------------------------------------------------------------------------------
 
-library(data.table)
-library(ggplot2)
-library(lubridate)
-library(here)
-library(cowplot)
-library(readxl)
-library(sn)
-library(qs)
-library(stringr)
-library(mgcv)
-library(binom)
-library(dplyr)
-library(beepr)
-library(scales)
-
 today <- Sys.Date()
 set_id <- paste0("fit-", opt_mobility, "_takeoff-", extra_voc_takeoff, "_waning-", opt_wane, "_mob-", opt_mobility, "_", today);
 
@@ -72,7 +57,7 @@ for (replic in REP_START:REP_END)
                     opt_relu, voct, voci, vacc, date_fitting)
   
     # Run convergence checks 
-    conv_out <- convergence(run$posteriorsI, 1)
+    conv_out <- convergence(mod_run$posteriorsI, 1)
     qsave(conv_out, file = here("output", paste0("./conv-diag-", set_id, ".qs"))) # Save locally
 
     # Generate model fit 

@@ -3,11 +3,6 @@
 # Author: Emilie Finch, adapted from code by Nick Davies in https://github.com/nicholasdavies/newcovid
 # -------------------------------------------------------------------------------------------------------
 
-library(here)
-library(qs)
-library(data.table)
-library(mgcv)
-
 # Infection-fatality rate -------------------------------------------------------------------------------
 # From O'Driscoll et al:https://doi.org/10.1038/s41586-020-2918-0
 
