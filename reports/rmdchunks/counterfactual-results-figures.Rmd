@@ -23,7 +23,7 @@ if(!exists("burden_out")){
 
 ```{r, include = FALSE}
 
-fit_wide <- pivot_wider(scenarios_out$no_vacc$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- pivot_wider(scenarios_out$no_vacc, names_from = "ModelType", values_from = 9:28)
 fit_wide <- as.data.table(fit_wide)
 
 pal <- c("Original model fit" = "#133E7E", "No vaccination" = "#6B200C")
@@ -73,7 +73,7 @@ fig_6
 
 # Pfizer 
 
-fit_wide <- pivot_wider(scenarios_out$pfizer$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- pivot_wider(scenarios_out$pfizer, names_from = "ModelType", values_from = 9:28)
 fit_wide <- as.data.table(fit_wide)
 
 pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
@@ -116,7 +116,7 @@ row_1 <- annotate_figure(row_1, left = text_grob("Pfizer efficacy", color = "bla
 
 # Pfizer delay
 
-fit_wide <- pivot_wider(scenarios_out$pfizer_delay$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- pivot_wider(scenarios_out$pfizer_delay, names_from = "ModelType", values_from = 9:28)
 fit_wide <- as.data.table(fit_wide)
 
 pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
@@ -158,7 +158,7 @@ row_2 <- annotate_figure(row_2, left = text_grob("Pfizer efficacy and delay", co
 
 # AZ efficacy
 
-fit_wide <- pivot_wider(scenarios_out$az$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- pivot_wider(scenarios_out$az, names_from = "ModelType", values_from = 9:28)
 fit_wide <- as.data.table(fit_wide)
 
 pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
@@ -199,7 +199,7 @@ row_3 <- annotate_figure(row_3, left = text_grob("AZ efficacy", color = "black",
 
 # AZ efficacy and delay
 
-fit_wide <- pivot_wider(scenarios_out$az_delay$counterfactual_fit, names_from = "ModelType", values_from = 9:28)
+fit_wide <- pivot_wider(scenarios_out$az_delay, names_from = "ModelType", values_from = 9:28)
 fit_wide <- as.data.table(fit_wide)
 
 pal <- c("Original model fit" = "#133E7E", "Scenario" = "#6B200C")
