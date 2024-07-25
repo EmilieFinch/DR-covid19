@@ -10,7 +10,7 @@ set_id <- paste0("fit-", opt_mobility, "_takeoff-", extra_voc_takeoff, "_waning-
 # See Table 3 in manuscript for description and references
 
 priorsI = list(
-    u = "N 0.09 0.02 T 0.055 0.2", 
+    u = "N 0.09 0.02 T 0.045 0.2", 
     death_mean = "N 15 2 T 5 30",    
     hosp_admission = "N 8 1 T 4 20", 
     icu_admission = "N 12.5 1 T 8 14", 
@@ -57,11 +57,11 @@ for (replic in REP_START:REP_END)
                     opt_relu, voct, voci, vacc, date_fitting)
   
     # Run convergence checks 
-    conv_out <- convergence(mod_run$posteriorsI, 1)
-    qsave(conv_out, file = here("output", paste0("./conv-diag-", set_id, ".qs"))) # Save locally
+    conv_out <- convergence(mod_run$posteriors, 1)
+    qsave(conv_out, file = here("output", paste0("./convergence-diagnostics", today, ".qs"))) # Save locally
 
     # Generate model fit 
-    mod_fit <- gen_fit(mod_run$test, mod_run$parametersI, ld, sitreps, virus, sero, "Dominican Republic")
-    qsave((list(posteriors = mod_run$posteriorsI, parameters = mod_run$parametersI, priors = mod_run$priorsI, dynamics = mod_run$test, constants = mod_run$constants, model_fit = mod_fit)), here("output",paste0(set_id, ".qs")))
+    mod_fit <- gen_fit(mod_run$dynamics, mod_run$parameters, ld, sitreps, virus, sero, "Dominican Republic")
+    qsave((list(posteriors = mod_run$posteriors, parameters = mod_run$parameters, priors = mod_run$priors, dynamics = mod_run$dynamics, constants = mod_run$constants, model_fit = mod_fit)), here("output",paste0("main-model-output_", today, ".qs")))
     
 }

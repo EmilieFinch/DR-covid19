@@ -42,14 +42,20 @@ library(NatParksPalettes)
 library(data.table)
 library(patchwork)
 library(scales)
-
+library(metR)
+library(data.table)
+library(kableExtra)
 source(here("R", "utils.R"))
 source(here("R", "generate-fit_fns.R"))
+source(here("R", "counterfactual_fns.R"))
 
 plot_font <- "Open Sans"
 font_add_google(plot_font)
 showtext_opts(dpi = 300)
 showtext_auto()
+
+dir.create(here("figures", Sys.Date()))
+output_folder <- here("figures", Sys.Date())
 
 ```
 

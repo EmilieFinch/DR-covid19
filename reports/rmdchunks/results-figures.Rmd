@@ -1,8 +1,9 @@
 ## Results {.tabset}
 
-```{r, include = FALSE}
+```{r, include = TRUE}
 
 # Load in model fit 
+
 if(!exists("mod_fit")){
       mod_out <- qread(here("output", "main-model-output.qs"))
       mod_fit <- mod_out$model_fit
@@ -21,6 +22,7 @@ if(!exists("date_fitting")){
 if(!exists("opt_mobility")){
   opt_mobility <- "comix-base" 
 }
+
 
 fit_data <- mod_fit[[1]]
 fit_output <- mod_fit[[2]]
@@ -41,20 +43,29 @@ library(MetBrewer)
 pal <-met.brewer("Java", 4)
 
 
-plot_death <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Deaths")]) +
+theme_set(cowplot::theme_cowplot(font_size = 10) + theme(strip.background = element_blank()))
+
+linetypes = c("Deaths", "Hospital\nadmissions", "Hospital beds\noccupied", "ICU beds\noccupied")
+
+library(MetBrewer)
+pal <-met.brewer("Java", 4)
+
+plot_death = ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Deaths")]) +
   geom_line(data = fit_data[ValueType == "Deaths"], aes(x = d, y = y), size = 0.3) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[1]) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`), alpha = 0.4, fill = pal[1]) +
   geom_line(aes(x = d, y = Value), color = pal[1]) +
   coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Deaths")]$`Quantile 0.95`))) + 
-  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
-  labs(x = NULL, y = "Reported Deaths") +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("15-02-2020", format = "%d-%m-%Y"),
+   as.Date("01-12-2021",format = "%d-%m-%Y"))) +                                                                               
+  scale_y_continuous(labels = c("0", "25", "50", "75", " 100")) +
+  labs(x = NULL, y = "Reported deaths \n") +
   theme_classic() +
-  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.y = element_text(size = 10, family = plot_font), axis.text.x = element_blank(), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
 
 
-plot_sero <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & ValueType == "Seroprevalence\n(%)"]) +
+plot_sero  = ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & ValueType == "Seroprevalence\n(%)"]) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[4]) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.25`, ymax = `Quantile 0.75`, fill = ValueType), alpha = 0.5, fill = pal[4]) +
   geom_line(aes(x = d, y = Value), color = pal[4]) +
@@ -63,14 +74,15 @@ plot_sero <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & ValueType =
   geom_linerange(data = fit_data[ValueType == "Seroprevalence\n(%)"], aes(x = d, ymin = ymin, ymax = ymax), size = 0.2) +
   geom_linerange(data = fit_data[ValueType == "Seroprevalence\n(%)"], aes(xmin = dmin, xmax = dmax, y = y), size = 0.2) +
   theme(legend.position = "none", strip.placement = "outside", strip.background = element_blank()) +
-  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
-  scale_y_continuous(breaks = seq(0,100, by = 20)) +
-  labs(x = NULL, y = "Previously Infected (%)") +
+ scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("15-02-2020", format = "%d-%m-%Y"),
+   as.Date("01-12-2021",format = "%d-%m-%Y"))) +                                                                               
+  scale_y_continuous(breaks = c(0,20,40,60,80), labels = c("0", "20", "40", "60", "  80")) +
+  labs(x = NULL, y = "Previously infected (%) \n") +
   theme_classic() +
-  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.y = element_text(size = 10, family = plot_font), axis.text.x = element_text(hjust = 1, size = 12, family = plot_font), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
 
-plot_hosps <-  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]) +
+plot_hosps =  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]) +
   geom_line(data = fit_data[ValueType == "Hospital beds\noccupied"], aes(x = d, y = y), size = 0.3) +
   geom_point(data = fit_data[ValueType == "Hospital beds\noccupied"], aes(x = d, y = y), size = 0.01, shape = 20) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[3]) +
@@ -78,14 +90,15 @@ plot_hosps <-  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueTyp
   geom_line(aes(x = d, y = Value), color = pal[3]) +
   geom_vline(aes(xintercept = min(fit_data[ValueType == "Hospital beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
   # coord_cartesian(ylim = c(0,150)) +
-  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
-  labs(x = NULL, y = "Hospital Beds Occupied") +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("15-02-2020", format = "%d-%m-%Y"),
+   as.Date("01-12-2021",format = "%d-%m-%Y"))) +                                                                               
+  labs(x = NULL, y = "Hospital beds occupied \n") +
   coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]$`Quantile 0.95`))) + 
   theme_classic() +
-  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.y = element_text(size = 10, family = plot_font), axis.text.x = element_blank(), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
 
-plot_icu <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]) +
+plot_icu = ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]) +
   geom_line(data = fit_data[ValueType == "ICU beds\noccupied"], aes(x = d, y = y), size = 0.3) +
   geom_point(data = fit_data[ValueType == "ICU beds\noccupied"], aes(x = d, y = y), size = 0.01, shape = 20) +
   geom_ribbon(aes(x = d, ymin = `Quantile 0.05`, ymax = `Quantile 0.95`), alpha = 0.3, fill = pal[2]) +
@@ -93,16 +106,19 @@ plot_icu <- ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType =
   geom_line(aes(x = d, y = Value), color = pal[2]) +
   geom_vline(aes(xintercept = min(fit_data[ValueType == "ICU beds\noccupied"]$d)), lty = "longdash", alpha = 0.7) +
   # coord_cartesian(ylim = c(0,150)) +
-  scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
-  labs(x = NULL, y = "ICU Beds Occupied") +
+ scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("15-02-2020", format = "%d-%m-%Y"),
+   as.Date("01-12-2021",format = "%d-%m-%Y"))) +                                                                               
+  labs(x = NULL, y = "ICU beds occupied \n") +
   coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]$`Quantile 0.95`))) + 
   theme_classic() +
-  theme(axis.title.y = element_text(size = 9, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.y = element_text(size = 10, family = plot_font), axis.text.x = element_blank(), legend.position = "bottom",
         legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font))
 
-fig_4 <- ggarrange(plot_hosps, plot_icu, plot_death, plot_sero, nrow = 4, labels = c("A", "B", "C", "D"))
+fig_4 <- ggarrange(plot_hosps, plot_icu, plot_death, plot_sero, nrow = 4, labels = c("a", "b", "c", "d"), font.label = list(font = plot_font))
+ggsave(filename = here(output_folder, "figure-4.tiff"), fig_4, width = 360, height = 270, units = "mm", bg="white", dpi = 300)
 
 ```
+
 
 ### Figure 4
 
@@ -120,19 +136,18 @@ plot_death_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (Value
   labs(x = NULL, y = "Reported Deaths", fill = "Age") +
   scale_fill_manual(values = met.brewer("Archambault", direction = -1)) +
   theme_classic() +
-  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), legend.position = "bottom",
-        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 7, family = plot_font), legend.title = element_text(size = 9, family = plot_font))
-
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_blank(), legend.position = "none",
+legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_text(size = 12, family = plot_font))
 
 plot_sero_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & ValueType == "Seroprevalence\n(%)"]) +
-  geom_line(aes(x = d, y = Value, col = AgeBand)) +
+  geom_area(aes(x = d, y = Value, fill = AgeBand)) +
   scale_x_date(breaks = "1 month", labels = scales::label_date_short()) +
   scale_y_continuous(breaks = seq(0,100, by = 20)) +
-  scale_color_manual(values = met.brewer("Archambault", direction = -1)) +
-  labs(x = "", y = "Previously Infected (%)", col = "Age") +
+  scale_fill_manual(values = met.brewer("Archambault", direction = -1)) +
+  labs(x = "", y = "Previously Infected (%)", fill = "Age") +
   theme_classic() +
-  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
-        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 12, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_text(size = 12, family = plot_font))
 
 plot_hosps_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "Hospital beds\noccupied")]) +
   geom_area(aes(x = d, y = Value, fill = AgeBand)) +
@@ -143,8 +158,8 @@ plot_hosps_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (Value
   labs(x = NULL, y = "Hospital Beds Occupied", fill = "Age") +
   coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "Hospital beds\noccupied")]$`Quantile 0.95`))) + 
   theme_classic() +
-  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
-        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_blank(), legend.position = "none",
+  legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_text(size = 12, family = plot_font))
 
 plot_icu_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueType == "ICU beds\noccupied")]) +
   geom_area(aes(x = d, y = Value, fill = AgeBand)) +
@@ -155,18 +170,19 @@ plot_icu_age <- ggplot(fit_output[d > "2020-03-01" & AgeBand != "All" & (ValueTy
   labs(x = NULL, y = "ICU Beds Occupied", fill = "Age") +
   coord_cartesian(ylim = c(0,max(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType == "ICU beds\noccupied")]$`Quantile 0.95`))) + 
   theme_classic() +
-  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), legend.position = "none",
-        legend.key.size = unit(0.4, "cm"), legend.text = element_text(size = 8, family = plot_font))
+  theme(axis.title.y = element_text(size = 11, family = plot_font), axis.text.x = element_blank(), legend.position = "none",
+legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_text(size = 12, family = plot_font))
 
-fig_s_2 <- ggarrange(plot_hosps_age, plot_icu_age,  plot_sero_age, plot_death_age, nrow = 4, labels = c("A", "B", "C", "D"), heights = c(1,1,1,1.2))
+fig_s_3 <- ggarrange(plot_hosps_age, plot_icu_age, plot_death_age,  plot_sero_age, nrow = 4,  labels = c("a", "b", "c", "d"), common.legend = TRUE, font.label = list(font = plot_font), legend = "bottom")
 
+ggsave(filename = here(output_folder, "figure-S3.tiff"), fig_s_3, width = 360, height = 300, units = "mm", bg="white", dpi = 300)
 
 ```
 
-### Figure S.2
+### Figure S.3
 
-```{r, fig.height = 10, fig.width = 15}
-fig_s_2
+```{r, fig.height = 12, fig.width = 12}
+fig_s_3
 ```
 
 ### Figure 5
@@ -183,11 +199,12 @@ plot_r <-  ggplot(fit_output[d > "2020-03-01" & AgeBand == "All" & (ValueType ==
   annotate("text", x=as.Date("2021-08-22"), y=6, label="Delta \n increasing", size = 3,family = plot_font, col = "black") +
   scale_color_manual(values = c("#40004B", "#1B7837")) +
   scale_fill_manual(values =c("#40004B", "#1B7837")) +
+  scale_y_continuous(breaks = seq(0,6, by = 1), labels = c("0", "1", "2", "3", "4", "5", "   6")) +
   geom_hline(yintercept = 1, lty = "longdash") +
-  labs(x = "Date", y = "R0 and Rt", fill = "", col = "") +
+  labs(x = "Date", y = "R0 and Rt \n", fill = "", col = "") +
   theme_classic() +
   scale_x_date(breaks = "1 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
-  theme(axis.title = element_text(size = 9, family = plot_font), axis.text.x = element_text(size = 9, vjust = 0.5, hjust=0.5, family = plot_font), axis.title.y = element_text(size = 10, family = plot_font), legend.position = "bottom")
+  theme(axis.title = element_text(size = 12, family = plot_font), axis.text.x = element_text(size = 9, family = plot_font), axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom")
 
 ```
 
@@ -202,11 +219,12 @@ contact_plot <- ggplot() +
   geom_line(aes(x = contacts$contact_times + as.Date("2020-01-01"), y = contacts$fin_othx, col = cols[5]), size = 0.4) +
   coord_cartesian(xlim = c(as.Date("2020-01-01"), as.Date(date_fitting))) +
   scale_color_manual(values = cols, labels = c("Home",  "Work", "School", "Other")) +
-  labs(x = "Date", y = "Change in Contacts") +
-  scale_x_date(limits = c(as.Date("2020-01-01"), as.Date("2021-12-01")), breaks = "3 months", date_labels = "%b-%Y") +
+  labs(x = "Date", y = "Change in contact rates \n") +
+  scale_x_date(breaks = "1 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
   scale_y_continuous(breaks = seq(0, max(contacts$fin_home), by = 0.2)) +
   theme_classic() +
-  theme(legend.position = "bottom", legend.title = element_blank())
+  theme(legend.position = "bottom", legend.title = element_blank()) +
+  theme(axis.title = element_text(size = 11, family = plot_font), axis.text.x = element_text(size = 9, family = plot_font), axis.title.y = element_text(size = 12, family = plot_font), legend.position = "bottom")
 
 ```
 
@@ -247,7 +265,7 @@ immunity_states <- rbind(
 )
 
 immunity_states[, d := make_date(`Year of Value`, `Month of Value`, `Day of Value`)]
-immunity_states <- immunity_states[d <= as.Date("2021-12-15")]
+
 
 immunity_states$AgeBand = factor(immunity_states$AgeBand, levels = c('0-4','5-9','10-14','15-19',
                                                                      '20-24','25-29','30-34','35-39',
@@ -256,40 +274,52 @@ immunity_states$AgeBand = factor(immunity_states$AgeBand, levels = c('0-4','5-9'
 
 immunity_states$ValueType = factor(immunity_states$ValueType, levels = c('inf', 'sus', 'rec', 'vacc'))
 
+
 pal <- natparks.pals("BryceCanyon", n = 7)
 
-plot_immune_states <- ggplot(immunity_states[AgeBand == "All"]) +
+plot_immune_states <- ggplot(immunity_states[AgeBand == "All" & d<= as.Date("2021-12-15")]) +
   geom_area(aes(d, Value, fill = ValueType), position = position_fill()) +
   scale_fill_manual(values = met.brewer("Isfahan1", n = 4), labels = c("Infected", "Susceptible", "Post-infection Protection", "Vaccinated")) +
   scale_x_date(breaks = "1 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
-  labs(x = NULL, y = "Proportion of the Population") +
+  labs(x = NULL, y = "Proportion of the population \n") +
   theme_classic() +
-  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 9, family = plot_font), legend.position = "bottom",
-        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 8, family = plot_font), legend.title = element_blank(),legend.box.margin=margin(-1,-1,-1,-1))
+  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title = element_text(size = 11, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.8, "cm"), legend.text = element_text(size = 10, family = plot_font), legend.title = element_blank(),legend.box.margin=margin(-1,-1,-1,-1))
 
+fig_5 <- ggarrange(plot_immune_states, contact_plot, plot_r, nrow = 3, heights = c(1.1, 1, 1), labels = c("a", "b", "c"), font.label = list(font = plot_font))
 
+ggsave(filename = here(output_folder, "figure-5.tiff"), fig_5, width = 360, height = 270, units = "mm", bg="white", dpi = 300)
 
-fig_5 <- ggarrange(plot_immune_states, contact_plot, plot_r, nrow = 3, labels = c("A", "B", "C"))
+stat_2020 <- immunity_states |> filter(AgeBand == "All" & d == as.Date("2020-12-31", format = "%Y-%m-%d") & ValueType == "rec") |> mutate(result = paste0(round(Value/10847904*100,digits = 2), " (95% CrI:", round(`Quantile 0.05`/10847904*100,2), " - ", round(`Quantile 0.95`/10847904*100,2), ")")) |> pull(result)
 
+stat_2021 <- immunity_states |> filter(AgeBand == "All" & d == as.Date("2021-12-31", format = "%Y-%m-%d") & ValueType == "rec") |> mutate(result = paste0(round(Value/10847904*100,digits = 2), " (95% CrI:", round(`Quantile 0.05`/10847904*100,2), " - ", round(`Quantile 0.95`/10847904*100,2), ")")) |> pull(result)
 ```
 
+By the end of 2020 `r stat_2020` of the population had been infected.
+
+By the end of 2021 `r stat_2021` of the population had been infected.
 
 ```{r, fig.height = 9, fig.width = 12}
 fig_5
 ```
 
-### Figure S.3
+### Figure S.4
 
 ```{r}
 plot_immune_states_age <- ggplot(immunity_states[AgeBand != "All"]) +
   geom_area(aes(d, Value, fill = ValueType), position = position_fill()) +
   scale_fill_manual(values = met.brewer("Isfahan1", n = 4), labels = c("Infected", "Susceptible", "Post-infection Protection", "Vaccinated")) +
   facet_wrap(~ AgeBand, ncol = 4) +
-  labs(x = NULL, y = "Proportion of the Population") +
+  labs(x = NULL, y = "Proportion of the population \n") +
   scale_x_date(breaks = "3 month", labels = scales::label_date_short(),limits = c(as.Date("2020-01-01"), as.Date("2021-12-01"))) +
   theme_classic() +
   theme(axis.text.x = element_text(hjust = 1, size = 8, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font),  axis.title.y = element_text(size = 10, family = plot_font), legend.position = "bottom",
         legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 8, family = plot_font), legend.title = element_blank())
+
+
+
+ggsave(filename = here(output_folder, "figure-S4.tiff"), plot_immune_states_age, width = 360, height = 270, units = "mm", bg="white", dpi = 300)
+
 ```
 
 ```{r, fig.height = 12, fig.width = 12}
@@ -308,11 +338,54 @@ post_plot <- ggplot(subset(melted, variable != "tS")) +
   facet_wrap(~variable, scales = "free") +
   labs(x = "", y = "") +
   theme_classic() +
-  theme(strip.background = element_blank()) 
+  theme(strip.background = element_blank()) +
+  theme(axis.text.x = element_text(hjust = 1, size = 11, family = plot_font), axis.text.y = element_text(size = 11, family = plot_font),  axis.title.y = element_text(size = 11, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 10, family = plot_font), legend.title = element_blank(), strip.text = element_text(size = 11, family = plot_font))
+
+
+
+ggsave(filename = here(output_folder, "figure-S1.tiff"), post_plot, width = 420, height = 315, units = "mm", bg="white", dpi = 300)
 
 ```
 
-```{r, fig.height = 8, fig.width = 12}
+```{r, fig.height = 12, fig.width = 18}
 post_plot
 ```
 
+### Residual plot
+
+```{r, include = FALSE}
+fit_output |> filter(AgeBand == "All") |> select(AgeBand, d, ValueType, Value, `Quantile 0.05`, `Quantile 0.25`, `Quantile 0.75`, `Quantile 0.95`) |> inner_join(fit_data |> select(ValueType, y, d), by = c("d", "ValueType")) |> 
+  filter(ValueType == "Deaths" | ValueType == "Hospital beds\noccupied" | ValueType == "ICU beds\noccupied") |> 
+  group_by(ValueType) |> 
+  mutate(obs_in_95CrI = case_when(y >= `Quantile 0.05` & y <= `Quantile 0.95` ~ 1, T ~0),
+         obs_in_50CrI = case_when(y >= `Quantile 0.25` & y <= `Quantile 0.75` ~ 1, T ~0)) |>
+  summarise(perc_in_95CrI = sum(obs_in_95CrI == 1)/n()*100, perc_in_50CrI = sum(obs_in_50CrI)/n()*100)
+
+```
+
+```{r, include = FALSE}
+
+fit_all <- fit_output |> filter(AgeBand == "All") |> select(AgeBand, d, ValueType, Value, `Quantile 0.05`, `Quantile 0.25`, `Quantile 0.75`, `Quantile 0.95`) |> inner_join(fit_data |> select(ValueType, y, d), by = c("d", "ValueType")) |> 
+  filter(ValueType == "Deaths" | ValueType == "Hospital beds\noccupied" | ValueType == "ICU beds\noccupied") 
+
+residual_plot <- fit_all |> 
+  mutate(residual = Value - y) |> 
+  ggplot() + 
+  geom_histogram(aes(residual)) +
+  labs(x = "Residual", y = "Frequency") + 
+  facet_wrap(~ ValueType, scales = "free") +
+  theme_minimal() +
+   theme(strip.background = element_blank()) +
+  theme(axis.text.x = element_text(hjust = 1, size = 11, family = plot_font), axis.text.y = element_text(size = 11, family = plot_font),  axis.title = element_text(size = 11, family = plot_font), legend.position = "bottom",
+        legend.key.size = unit(0.6, "cm"), legend.text = element_text(size = 11, family = plot_font), legend.title = element_blank(), strip.text = element_text(size = 11, family = plot_font))
+
+
+ggsave(filename = here(output_folder, "figure-S2.tiff"), residual_plot, width = 360, height = 150, units = "mm", bg="white", dpi = 300)
+
+```
+
+
+```{r, fig.height = 8, fig.width = 20}
+residual_plot
+```

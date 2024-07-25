@@ -14,7 +14,7 @@ source(here("R", "counterfactual_fns.R"))
 # Load covidM
 
 cm_path <- here("R", "covidm_for_fitting")
-cm_force_rebuild = F;
+cm_force_rebuild = T;
 cm_build_verbose = T;
 cm_version = 2;
 source(here(cm_path, "R/covidm.R"))
@@ -80,9 +80,9 @@ for (i in seq_along(params$pop)) {
 # Note ei_v and ed_v1 refer to strain 1 and ei2_v and ed_vi2 refer to strain 2.
 
 params$pop[[1]]$ei_v = rep(0.67,16) # Efficacy against infection for WT / Alpha and other intermediate VOI / VOC
-ed_oi = 0.67 # Overall efficacy against disease for WT / Alpha and other intermediate VOI/VOC
+ed_oi = 0.92 # Overall efficacy against severe disease for WT / Alpha and other intermediate VOI/VOC
 params$pop[[1]]$ei2_v = rep(0.39 ,16) # Efficacy against infection for Delta
-ed_oi2 = 0.39 # Overall efficacy against disease for Delta
+ed_oi2 = 0.61  # Overall efficacy against severe disease for Delta
 params$pop[[1]]$ed_vi = calc_ve_d(params$pop[[1]]$ei_v, ed_oi) # Efficacy against disease given infection, that is clinical fraction among breakthrough for WT / Alpha and other intermediate VOI / VOC
 params$pop[[1]]$ed_vi2 = calc_ve_d(params$pop[[1]]$ei2_v, ed_oi2) # Efficacy against disease given infection, that is clinical fraction among breakthrough for Delta
 
@@ -128,3 +128,4 @@ if(extra_voc_takeoff == "broad"){
 } else {}
 
 voci <- seq(0,1, by = 1/(length(voct) -1))
+

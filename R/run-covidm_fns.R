@@ -131,7 +131,7 @@ covidm_fit <- function(REP_START, REP_END, BURN_IN,
   test[, population := "Dominican Republic"]
   qsave(rlang::duplicate(list(posteriorsI, parametersI, priorsI, test, constants)), here("output",paste0(set_id, ".qs")))
 
-  return(list(test = test, posteriorsI = posteriorsI, parametersI = parametersI, priorsI = priorsI, constants = constants))
+  return(list(dynamics = test, posteriors = posteriorsI, parameters = parametersI, priors = priorsI, constants = constants))
  
 }
   

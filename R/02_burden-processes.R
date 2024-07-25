@@ -76,20 +76,23 @@ probabilities$ifr = ifr_odriscoll
 
 # Create model burden processes ------------------------------------------------------------------------------
 
- P.hosp     = probabilities[, isr];
- P.critical = probabilities[, icr];
+# Conditional probabilities (i.e. P(hospitalisation | symptomatic disease)) as individuals enter the processes from the Ip compartment
+
+ P.hosp     = probabilities[, isr] / params$pop[[1]]$y
+ P.critical = probabilities[, icr] / params$pop[[1]]$y
  # P.severe   = probabilities[, ihr * (1 - picu)];
- P.death    = probabilities[, ifr];
+ P.death    = probabilities[, ifr] / params$pop[[1]]$y
+ 
 
 burden_processes = list(
   
     # Variant 1 burden processes
   
-    list(source = "newI", type = "multinomial", names = c("to_hosp", "null"), report = c("", ""),
+    list(source = "newIs", type = "multinomial", names = c("to_hosp", "null"), report = c("", ""),
         prob = matrix(c(P.hosp, 1 - P.hosp), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_gamma(6.0 + 2.5, 0.71, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
 
-    list(source = "newI", type = "multinomial", names = c("to_icu", "null"), report = c("", ""),
+    list(source = "newIs", type = "multinomial", names = c("to_icu", "null"), report = c("", ""),
         prob = matrix(c(P.critical, 1 - P.critical), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_gamma(9.6 + 2.5, 1.91, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
 
@@ -101,7 +104,7 @@ burden_processes = list(
         prob = matrix(1, nrow = 1, ncol = 16, byrow = T),
         delays = matrix(cm_delay_lnorm(13.33, 1.25, 60, 0.25)$p, nrow = 1, byrow = T)),
 
-    list(source = "newI", type = "multinomial", names = c("death", "null"), report = c("o", ""),
+    list(source = "newIs", type = "multinomial", names = c("death", "null"), report = c("o", ""),
         prob = matrix(c(P.death, 1 - P.death), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_lnorm(15, 0.9, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
 
@@ -129,11 +132,11 @@ burden_processes = list(
     
     # Variant 2 burden processes
     
-    list(source = "newI2", type = "multinomial", names = c("to_hosp2", "null"), report = c("", ""),
+    list(source = "newIs2", type = "multinomial", names = c("to_hosp2", "null"), report = c("", ""),
         prob = matrix(c(P.hosp, 1 - P.hosp), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_gamma(6.0 + 2.5, 0.71, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
 
-    list(source = "newI2", type = "multinomial", names = c("to_icu2", "null"), report = c("", ""),
+    list(source = "newIs2", type = "multinomial", names = c("to_icu2", "null"), report = c("", ""),
         prob = matrix(c(P.critical, 1 - P.critical), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_gamma(9.6 + 2.5, 1.91, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
 
@@ -145,7 +148,7 @@ burden_processes = list(
         prob = matrix(1, nrow = 1, ncol = 16, byrow = T),
         delays = matrix(cm_delay_lnorm(13.33, 1.25, 60, 0.25)$p, nrow = 1, byrow = T)),
 
-    list(source = "newI2", type = "multinomial", names = c("death2", "null"), report = c("o", ""),
+    list(source = "newIs2", type = "multinomial", names = c("death2", "null"), report = c("o", ""),
         prob = matrix(c(P.death, 1 - P.death), nrow = 2, ncol = 16, byrow = T),
         delays = matrix(c(cm_delay_lnorm(15, 0.9, 60, 0.25)$p, cm_delay_skip(60, 0.25)$p), nrow = 2, byrow = T)),
     

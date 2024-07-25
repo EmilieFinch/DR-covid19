@@ -8,6 +8,7 @@
 ## Here comparing burden in 6 months following start of vaccination campaign
 
 date_end = "2021-08-16" 
+today <- Sys.Date()
 
 # Get list of mobility changes  -------------------------------------------------------------------------
 ## Work and other contacts reduced from -40%:40% in 10% intervals from 16th Feb 2021 until 16th August 2021
@@ -21,7 +22,7 @@ for(k in intervals){
   for (j in 412:(as.Date(date_end) - as.Date("2020-01-01"))) { 
     # Only change work and other contacts (not home or school)
     for(q in 2:5){ 
-      new_schedule$values[[j]][q] <- max(schedule$values[[j]][q]-k,0)
+      new_schedule$values[[j]][q] <- max(schedule[[1]]$values[[j]][q]-k,0)
     }
   }
   list_schedules[[which(k == intervals)]] <- new_schedule
@@ -82,26 +83,26 @@ for(o in 1:length(list_schedules)){
                                                  opt_relu, voct, voci, vacc =new_vacc)
     
     options(scipen=999) 
-    comp_outs <- get_burden_tables(counterfactual_fit, d = base_fit[[1]], sim_end = date_end)
+    comp_outs <- get_burden_tables(counterfactual_fit, d = mod_fit[[1]], sim_end = date_end) 
     comp_outs <- c(comp_outs, label = scenario_name)
     
    # Total
     
     add_total <- data.frame(contact = intervals[o], 
                       vaccination = proportions[p],
-                      ValueType = comp_outs$burden_averted_table_total$ValueType,
-                      value = comp_outs$burden_averted_table_total$total_averted,
-                      total_05 = comp_outs$burden_averted_table_total$total_05,
-                      total_25 = comp_outs$burden_averted_table_total$total_25,
-                      total_75 = comp_outs$burden_averted_table_total$total_75,
-                      total_95 = comp_outs$burden_averted_table_total$total_95)
+                      ValueType = comp_outs$burden_averted_table$ValueType[comp_outs$burden_averted_table$horizon == "Total"],
+                      value = comp_outs$burden_averted_table$total_averted[comp_outs$burden_averted_table$horizon == "Total"],
+                      total_05 = comp_outs$burden_averted_table$total_05[comp_outs$burden_averted_table$horizon == "Total"],
+                      total_25 = comp_outs$burden_averted_table$total_25[comp_outs$burden_averted_table$horizon == "Total"],
+                      total_75 = comp_outs$burden_averted_table$total_75[comp_outs$burden_averted_table$horizon == "Total"],
+                      total_95 = comp_outs$burden_averted_table$total_95[comp_outs$burden_averted_table$horizon == "Total"])
     
     burden_out <- bind_rows(burden_out, add_total)
     
-    qsave(list(burden_table = burden_out), file = here("output", paste0("counterfactual-trade-off_", set_id, "_sim-end-", date_end,"_", today, ".qs")))
+    qsave(list(burden_table = burden_out), file = here("output", paste0("counterfactual-trade-off_", today, ".qs")))
     
   }
 }
 
 
-qsave(list(burden_table = burden_out), file = here("output", paste0("counterfactual-trade-off_", set_id, "_sim-end-", date_end,"_", today, ".qs")))
+qsave(list(burden_table = burden_out), file = here("output", paste0("counterfactual-trade-off_", today, ".qs")))

@@ -9,13 +9,15 @@
 
 DR_subnational <- st_read(here("data", "geographical", "gadm36_DOM_shp", "gadm36_DOM_2.shp"))
 
-#selected_clusters <- selected_clusters %>% 
-#  mutate(urban_rural = as.factor(Classification))
+selected_clusters <- read.csv("/Users/emiliefinch/Projects/DR-covid/geographical_data/selected_clusters.csv") 
+
+selected_clusters <- selected_clusters %>% 
+  mutate(urban_rural = as.factor(Classification))
 
 cluster_map <- ggplot() +
   geom_sf(data = DR_subnational, fill = "#d5dce3",  color = "#014636", size = 0.2) +  
   #geom_sf(data = subset(DR_subnational, NAME_2 == "San Pedro de Macorís" | NAME_2 == "Moca" | NAME_2 == "Santiago de los Caballeros"),  fill = "#0570b0", alpha = 0.5, color = "#045a8d", size = 0.2) +
-  #geom_point(data = selected_clusters, aes(x = Long, y = Lat), col = ("#016c59"), size = 1.2, shape = 16) +
+  geom_jitter(data = selected_clusters, aes(x = Long, y = Lat), col = ("#016c59"), size = 1.2, shape = 16) +
   guides(x = "none", y = "none") +
   coord_sf() +
   labs(x = NULL, y = NULL) +
@@ -48,32 +50,43 @@ plot_carib <- ggplot() +
   theme(plot.margin = unit(c(0, 0, 0, 0), "cm")) +
   scale_x_continuous(expand = c(0.01,0.01)) + scale_y_continuous(expand = c(0.01,0.01))
 
-maps <- ggarrange(plot_carib, cluster_map, labels = c("A", "B"), vjust =2)
+
+maps <- ggarrange(plot_carib, cluster_map, labels = c("a", "b"), vjust = 2, font.label = list(size = 16, font = plot_font))
+
 
 ```
 
-```{r, fig.width = 12, fig.height = 9}
+```{r, fig.width = 15, fig.height = 12}
 
 # Plot case time series for Figure 6
 
-covid19_cases <- read.csv(here("data", "covid19-cases_dom-rep.csv")) %>% 
+
+covid19_cases <- read.csv(here("data", "covid19-cases_dom-rep.csv")) |> 
   mutate(date = as.Date(date, format = "%d/%m/%Y"))
 
 pal <- met.brewer("Isfahan1", n = 12, type = "continuous")
 
 plot_cases <- ggplot(covid19_cases, aes(x= date, y = new_cases)) +
-  geom_col(alpha = 0.6, fill = pal[9], width = 1) + #"#02818a"
+  geom_col(alpha = 0.6, fill = pal[9], width = 1.025) + #"#02818a"
   geom_ma(ma_fun = SMA, n = 7, alpha = 1, lty = "solid", size = 0.5, col = "#016c59") +
-  xlab("Date Confirmed") + ylab("COVID-19 Cases") +
+  #geom_line(aes(x = date, y = test_positivity_14_day_smooth*100*100), size = 0.5, col = pal[10]) + #"#016c59"
+  xlab("Date Confirmed") + ylab("COVID-19 cases \n") +
+  scale_y_continuous(breaks = seq(0,3000, by = 1000)) +
+  geom_vline(aes(xintercept = as.Date("2020-03-19")), size = 0.3,  col = "#737373") +
+  annotate("text", x=as.Date("2020-04-14"), y=3000, label="State of \n emergency", size = 4,  family = plot_font, col = "black") +
+  geom_vline(aes(xintercept = as.Date("2021-02-16")), size = 0.3,  col = "#737373") +
+  annotate("text", x=as.Date("2021-03-19"), y=3000, label="Vaccination \n starts", size = 4,  family = plot_font, col = "black") +
+  geom_vline(aes(xintercept = as.Date("2021-10-11")), size = 0.3,  col = "#737373") +
+  annotate("text", x=as.Date("2021-11-21"), y=3000, label="Curfew and state \n of emergency lifted", size = 4,  family = plot_font, col = "black") +
   annotate("rect", xmin = as.Date("2021-06-30"), xmax = as.Date("2021-10-12"), ymin = -1, ymax = 3000,
            alpha = .2, fill = "grey") +
-  scale_y_continuous(breaks = seq(0,3000, by = 500)) +
-  theme_classic() + 
+  theme_classic() +
   scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("2020-03-01"), as.Date("2021-12-15"))) +
-  theme(axis.text.x = element_text(hjust = 1, size = 9, family = plot_font), axis.text.y = element_text(size = 9, family = plot_font), axis.title = element_text(size = 9, family = plot_font))
+  theme(axis.text.x = element_text(hjust = 1, size = 11, family = plot_font), axis.text.y = element_text(size = 10, family = plot_font), axis.title = element_text(size = 12, family = plot_font))
 
 
-fig_1 <- ggarrange(maps, plot_cases, nrow = 2, heights = c(1, 0.75), labels = c("", "C"), vjust =-1, font.label = list(size = 14))
+fig_1 <- ggarrange(maps, plot_cases, nrow = 2, heights = c(1, 0.75), labels = c("", "c"), vjust =-1, font.label = list(size = 14))
+ggsave(filename = here(output_folder, "figure-1.tiff"), fig_1, width = 360, height = 270, units = "mm", bg="white", dpi = 300, )
 
 fig_1
 
@@ -128,8 +141,8 @@ plot_gmobility <- ggplot(gmobility_weekly, aes(x= week, y = value, color = varia
                      labels = c("Grocery and Pharmacy", "Other Average", "Parks", "Residential", "Retail and Recreation", "Workplaces"), values = cols) + 
   scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("2020-03-01"), as.Date("2021-12-15"))) +
   theme_classic() +
-  theme(axis.text = element_text(size = 9, family = plot_font), axis.title = element_text(size = 12, family = plot_font), legend.position = "bottom",
-        legend.text = element_text(size = 8.5, family = plot_font)) 
+  theme(axis.text = element_text(size = 10.5, family = plot_font), axis.title = element_text(size = 12, family = plot_font), legend.position = "bottom",
+        legend.text = element_text(size = 10.5, family = plot_font)) 
 
 ```
 
@@ -171,15 +184,19 @@ df_vaccinated$age_group <- factor(df_vaccinated$age_group, labels = age_labs)
 
 ```{r}
 
-prop_vaccinated <- ggplot(df_vaccinated) +
+cols <- colorRampPalette(brewer.pal(11, "BrBG")[-6])(12)
+
+prop_vaccinated <- ggplot(df_vaccinated |> filter(age_group != "0-4" & age_group != "5-9" & age_group != "10-14" & age_group != "15-19")) +
   geom_line(aes(x = as.Date("2021-02-15") + time_step, y = percentage, group = factor(age_group), col = factor(age_group))) +
   geom_hline(aes(yintercept = 100), lty = "dashed") + 
   scale_y_continuous(breaks = seq(0,110, by = 10)) +
   labs(x = "Date", y = "Percentage of age group fully vaccinated", col = "Age Group") +
   scale_x_date(breaks = "1 month", labels = scales::label_date_short(), limits = c(as.Date("2021-03-01"), as.Date("2021-12-15"))) +
+  scale_color_manual(values = cols) +
   theme_classic() +
-  theme(axis.text = element_text(size = 9, family = plot_font), axis.title = element_text(size = 12, family = plot_font), legend.position = "right",
-        legend.text = element_text(size = 8, family = plot_font), legend.title = element_text(size = 12, family = plot_font)) 
+  theme(axis.text = element_text(size = 10.5, family = plot_font), axis.title = element_text(size = 12, family = plot_font), legend.position = "right",
+        legend.text = element_text(size = 10.5, family = plot_font), legend.title = element_text(size = 12, family = plot_font)) 
+
 
 ```
 
@@ -194,15 +211,15 @@ gisaid <- gisaid %>% clean_names() %>%
                             grepl("B.1.617.2", pangolin_lineage, ignore.case = TRUE) ~ "Delta",
                             grepl("BA.1", pangolin_lineage, ignore.case = TRUE) ~ "BA.1",
                             grepl("BA.2", pangolin_lineage, ignore.case = TRUE) ~ "BA.2",
-                            grepl("BA.4", pangolin_lineage, ignore.case = TRUE) ~ "BA.4_5",
-                            grepl("BA.5", pangolin_lineage, ignore.case = TRUE) ~ "BA.4_5",
+                            grepl("BA.4", pangolin_lineage, ignore.case = TRUE) ~ "BA.4/5",
+                            grepl("BA.5", pangolin_lineage, ignore.case = TRUE) ~ "BA.4/5",
                             grepl("P.1", pangolin_lineage, ignore.case = TRUE) ~ "Gamma",
                             grepl("B.1.621", pangolin_lineage, ignore.case = TRUE) ~ "Mu",
                             grepl("C.37", pangolin_lineage, ignore.case = TRUE) ~ "Lambda",
                             grepl("BQ", pangolin_lineage, ignore.case = TRUE) ~ "BA.4_5",
                             grepl("BF", pangolin_lineage, ignore.case = TRUE) ~ "BA.4_5",
-                            grepl("XAM", pangolin_lineage, ignore.case = TRUE) ~ "Recombinant_Omicron",
-                            grepl("XAM", pangolin_lineage, ignore.case = TRUE) ~ "Recominant_Omicron",
+                            grepl("XAM", pangolin_lineage, ignore.case = TRUE) ~ "Recombinant Omicron",
+                            grepl("XAM", pangolin_lineage, ignore.case = TRUE) ~ "Recominant Omicron",
                             grepl("Unassigned", pangolin_lineage, ignore.case = TRUE) ~ "Unassigned",
                             TRUE ~ "Other")) %>% 
   mutate(voc = case_when(clade2 == "Other" | clade2 == "Unassigned" ~ "No",
@@ -212,7 +229,7 @@ gisaid <- gisaid %>% clean_names() %>%
 ```{r, include = FALSE}
 
 # Frequency (weekly resolution)
-cols <- c("Alpha" = "#F8766D", "BA.1" = "#DE8C00", "BA.2" = "#B79F00", "BA.4_5" = "#7CAE00", "Delta" = "#00BA38", "Gamma" = "#00C08B", "Iota" = "#00BFC4", "Lambda" = "#00B4F0", "Mu" = "#619CFF", "Omicron_Unassigned" = "#C77CFF", "Recombinant_Omicron" = "#F564E3", "Other" = "#FF64B0")
+cols <- c("Alpha" = "#F8766D", "BA.1" = "#DE8C00", "BA.2" = "#B79F00", "BA.4/5" = "#7CAE00", "Delta" = "#00BA38", "Gamma" = "#00C08B", "Iota" = "#00BFC4", "Lambda" = "#00B4F0", "Mu" = "#619CFF", "Omicron_Unassigned" = "#C77CFF", "Recombinant Omicron" = "#F564E3", "Other" = "#FF64B0")
 
 gisaid_freq <- gisaid %>% 
   mutate(week_date = floor_date(date, unit = "week", week_start = 1)) %>% 
@@ -226,13 +243,15 @@ gisaid_freq <- gisaid %>%
   scale_fill_manual(values = cols) +
   labs(x = "Date", y = "Frequency", fill = "Clade") +
   theme_classic() +
-  theme(axis.text = element_text(size = 9, family = plot_font), axis.title = element_text(size = 12, family = plot_font), 
+  theme(axis.text = element_text(size = 10.5, family = plot_font), axis.title = element_text(size = 12, family = plot_font), 
         legend.position = "right", 
-        legend.text = element_text(size = 8, family = plot_font), legend.title = element_text(size = 12, family = plot_font)) 
+        legend.text = element_text(size = 10.5, family = plot_font), legend.title = element_text(size = 12, family = plot_font)) 
 
 
-row2 <- ggarrange(gisaid_freq, prop_vaccinated, nrow = 1, labels = c("B", "C"))
-fig_2 <- ggarrange(plot_gmobility, row2, nrow = 2, labels = c("A"))
+row2 <- ggarrange(gisaid_freq, prop_vaccinated, nrow = 1, labels = c("b", "c"), font.label = list(font = plot_font))
+fig_2 <- ggarrange(plot_gmobility, row2, nrow = 2, labels = c("a"), font.label = list(font = plot_font))
+ggsave(filename = here(output_folder, "figure-2.tiff"), fig_2, width = 360, height = 270, units = "mm", bg="white", dpi = 300)
+
 ```
 
 ```{r, fig.width = 15, fig.height = 9}

@@ -1,5 +1,6 @@
 
 # Function to create schedule for covidm input from Google data and school closures
+
 make_schedule <- function(y) {
 
   schedule = list()

@@ -76,10 +76,10 @@ run_counterfactual <- function(base_run, sim_end, vacc_scenario,
                               opt_mobility, seas_yn, seas_amp, 
                               opt_v2, opt_relu, voct, voci, vacc) {
 
-  postI <- base_run$posteriorsI
-  paramsI_base <- base_run$parametersI
-  priorsI <- base_run$priorsI
-  test_base <- base_run$test
+  postI <- base_run$posteriors
+  paramsI_base <- base_run$parameters
+  priorsI <- base_run$priors
+  test_base <- base_run$dynamics
   constants <- base_run$constants
   
   if(vacc_scenario != "trade-off"){ 
@@ -99,9 +99,9 @@ run_counterfactual <- function(base_run, sim_end, vacc_scenario,
     # Change vaccine efficacy parameters to Pfizer
     
     params$pop[[1]]$ei_v <- rep(0.85,16)
-    ed_oi = 0.9
+    ed_oi = 0.95#ed_oi = 0.9
     params$pop[[1]]$ei2_v <- rep(0.8,16)
-    ed_oi2 = 0.81
+    ed_oi2 = 0.96#0.81
     params$pop[[1]]$ed_vi <- calc_ve_d(params$pop[[1]]$ei_v,ed_oi)
     params$pop[[1]]$ed_vi2 <- calc_ve_d(params$pop[[1]]$ei2_v,ed_oi2)
   }
@@ -111,9 +111,9 @@ run_counterfactual <- function(base_run, sim_end, vacc_scenario,
     # Change vaccine efficacy parameters to Pfizer
     
     params$pop[[1]]$ei_v <- rep(0.85,16)
-    ed_oi = 0.9
+    ed_oi = 0.95
     params$pop[[1]]$ei2_v <- rep(0.8,16)
-    ed_oi2 = 0.81
+    ed_oi2 = 0.96
     params$pop[[1]]$ed_vi <- calc_ve_d(params$pop[[1]]$ei_v,ed_oi)
     params$pop[[1]]$ed_vi2 <- calc_ve_d(params$pop[[1]]$ei2_v,ed_oi2)
     
@@ -130,8 +130,8 @@ run_counterfactual <- function(base_run, sim_end, vacc_scenario,
     
     params$pop[[1]]$ei_v <- rep(0.75,16)
     params$pop[[1]]$ei2_v <- rep(0.63,16)
-    ed_oi <- rep(0.8,16)
-    ed_oi2 <- rep(0.65,16)
+    ed_oi <- rep(0.9,16)
+    ed_oi2 <- rep(0.93,16)
     params$pop[[1]]$ed_vi <- calc_ve_d(params$pop[[1]]$ei_v,ed_oi)
     params$pop[[1]]$ed_vi2 <- calc_ve_d(params$pop[[1]]$ei2_v,ed_oi2)
     
@@ -143,8 +143,8 @@ run_counterfactual <- function(base_run, sim_end, vacc_scenario,
     
     params$pop[[1]]$ei_v <- rep(0.75,16)
     params$pop[[1]]$ei2_v <- rep(0.63,16)
-    ed_oi <- rep(0.8,16)
-    ed_oi2 <- rep(0.65,16)
+    ed_oi <- rep(0.9,16)
+    ed_oi2 <- rep(0.93,16)
     params$pop[[1]]$ed_vi <- calc_ve_d(params$pop[[1]]$ei_v,ed_oi)
     params$pop[[1]]$ed_vi2 <- calc_ve_d(params$pop[[1]]$ei2_v,ed_oi2)
     
@@ -289,7 +289,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date( "2021-08-16")) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Burden Averted")
+    mutate(run = "Burden Averted") |> 
+    mutate(horizon = "6 months")
   
   
   scenario_table_6 <- fit %>% 
@@ -298,7 +299,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date( "2021-08-16")) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Scenario")
+    mutate(run = "Scenario") |> 
+    mutate(horizon = "6 months")
   
   
   base_table_6 <- fit %>% 
@@ -307,7 +309,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date( "2021-08-16")) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Baseline")
+    mutate(run = "Baseline") |> 
+    mutate(horizon = "6 months")
   
   
   burden_averted_table_total <- fit %>% 
@@ -316,7 +319,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date(end_date)) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Burden Averted")
+    mutate(run = "Burden Averted") |> 
+    mutate(horizon = "Total")
   
   
   scenario_table_total <- fit %>% 
@@ -325,7 +329,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date(end_date)) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Scenario")
+    mutate(run = "Scenario") |> 
+    mutate(horizon = "Total")
   
   
   base_table_total <- fit %>% 
@@ -334,7 +339,8 @@ get_burden_tables <- function(d, fit, sim_end){
     filter(date <= as.Date(end_date)) %>% 
     group_by(ValueType) %>%
     summarise(total_averted = sum(Value),  total_05 = sum(`Quantile 0.05`), total_25 = sum(`Quantile 0.25`), total_75 = sum(`Quantile 0.75`), total_95 = sum(`Quantile 0.95`)) %>% 
-    mutate(run = "Baseline")
+    mutate(run = "Baseline") |> 
+    mutate(horizon = "Total")
   
   
   data_table <- data %>% 
@@ -347,7 +353,11 @@ get_burden_tables <- function(d, fit, sim_end){
     mutate(Run = "Data") %>% 
     mutate(Year = "All")
   
-  return(list(burden_averted_table_6 = burden_averted_table_6, scenario_table_6 = scenario_table_6, base_table_6 = base_table_6, burden_averted_table_total = burden_averted_table_total, scenario_table_total = scenario_table_total, base_table_total = base_table_total))
+  burden_averted_table <- rbind(burden_averted_table_6, burden_averted_table_total)
+  scenario_table <- rbind(scenario_table_6, scenario_table_total)
+  base_table <- rbind(base_table_6, base_table_total)
+  
+  return(list(burden_averted_table = burden_averted_table, scenario_table = scenario_table, base_table = base_table))
 
   }
 
