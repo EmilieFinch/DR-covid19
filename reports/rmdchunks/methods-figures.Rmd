@@ -9,15 +9,13 @@
 
 DR_subnational <- st_read(here("data", "geographical", "gadm36_DOM_shp", "gadm36_DOM_2.shp"))
 
-selected_clusters <- read.csv("/Users/emiliefinch/Projects/DR-covid/geographical_data/selected_clusters.csv") 
-
-selected_clusters <- selected_clusters %>% 
-  mutate(urban_rural = as.factor(Classification))
+# selected_clusters <- selected_clusters %>% 
+#  mutate(urban_rural = as.factor(Classification))
 
 cluster_map <- ggplot() +
   geom_sf(data = DR_subnational, fill = "#d5dce3",  color = "#014636", size = 0.2) +  
   #geom_sf(data = subset(DR_subnational, NAME_2 == "San Pedro de Macorís" | NAME_2 == "Moca" | NAME_2 == "Santiago de los Caballeros"),  fill = "#0570b0", alpha = 0.5, color = "#045a8d", size = 0.2) +
-  geom_jitter(data = selected_clusters, aes(x = Long, y = Lat), col = ("#016c59"), size = 1.2, shape = 16) +
+ # geom_jitter(data = selected_clusters, aes(x = Long, y = Lat), col = ("#016c59"), size = 1.2, shape = 16) +
   guides(x = "none", y = "none") +
   coord_sf() +
   labs(x = NULL, y = NULL) +
@@ -36,8 +34,6 @@ coords <- coords %>% mutate(long = as.numeric(long), lat = as.numeric(lat))
 
 caribs$long <-coords$long
 caribs$lat <-coords$lat
-
-plot_ratio <- get_asp_ratio(caribs)
 
 plot_carib <- ggplot() +
   geom_sf(data = caribs, fill = "#d5dce3",  color = "#014636", size = 0.2) +  

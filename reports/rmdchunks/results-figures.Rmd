@@ -318,7 +318,7 @@ plot_immune_states_age <- ggplot(immunity_states[AgeBand != "All"]) +
 
 
 
-ggsave(filename = here(output_folder, "figure-S4.tiff"), plot_immune_states_age, width = 360, height = 270, units = "mm", bg="white", dpi = 300)
+ggsave(filename = here(output_folder, "figure-S4.tiff"), plot_immune_states_age, width = 270, height = 270, units = "mm", bg="white", dpi = 300)
 
 ```
 
